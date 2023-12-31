@@ -2,11 +2,13 @@ package app.objects;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 import static processing.core.PConstants.PI;
 import static processing.core.PConstants.TWO_PI;
 
 @Getter
+@Setter
 public class Gear {
     @Getter(AccessLevel.NONE)
     public final static int TOOTH_SIZE = 15;
@@ -44,7 +46,6 @@ public class Gear {
     private int calculateToothCount(final float radius) {
         final float circumcise = TWO_PI * radius;
         final int tooth = Math.round(circumcise / TOOTH_SIZE / 4);
-        System.out.println(tooth);
         return tooth;
     }
 

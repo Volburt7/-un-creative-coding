@@ -62,6 +62,7 @@ public class GearSimulation extends PApplet {
     public void setup() {
         frameRate(60);
         gears.clear();
+        gears.add(new Gear(400, 300, 400, PI));
     }
 
     public void draw() {
@@ -90,45 +91,39 @@ public class GearSimulation extends PApplet {
     }
 
     private PShape getGearShape(final Gear gear) {
+        if(gear.getToothCount() < 2) {
+            return new PShape();
+        }
+
         final PShape gearShape = createShape();
 
+
         gearShape.beginShape();
-        for (float rad=0.0f; rad<=TWO_PI; rad+=TWO_PI/180) {
-            float xPos = cos(rad) * gear.getRadius();
-            float yPos = sin(rad) * gear.getRadius();
-            gearShape.vertex(xPos, yPos);
-        }
+        drawTeeth(gear, gearShape);
 
         gearShape.beginContour();
-        for (float rad=TWO_PI; rad>0; rad-=TWO_PI/180) {
-            float xPos =  cos(rad) * gear.getRadius() / 2;
-            float yPos =  sin(rad) * gear.getRadius() / 2;
-            gearShape.vertex(xPos, yPos);
-        }
+        removeInnerCircle(gear, gearShape);
         gearShape.endContour();
+
         gearShape.endShape(CLOSE);
         return gearShape;
     }
 
-    private List<PShape> getTeeth(final Gear gear) {
-        final List<PShape> teeth = new ArrayList<>();
-
-        fill(100);
-        rectMode(RADIUS);
-
-        final float deltaRadians = TWO_PI / gear.getToothCount();
-
-        for (float radians = gear.getCurrentRotation(); radians <= TWO_PI + gear.getCurrentRotation(); radians+=deltaRadians) {
-            final PShape tooth = createShape();
-            tooth.beginShape();
-            pushMatrix();
-            translate(gear.getRadius() * cos(radians), gear.getRadius() * sin(radians));
-            rotate(radians);
-            rect(0, 0, Gear.TOOTH_SIZE*2.5f, Gear.TOOTH_SIZE);
-            popMatrix();
-            tooth.endShape();
-            teeth.add(tooth);
+    private void drawTeeth(final Gear gear, final PShape gearShape) {
+        gearShape.noStroke();
+        // Logic from https://math.stackexchange.com/questions/225351/equation-of-sine
+        for (float rad = 0.0f; rad < TWO_PI; rad += TWO_PI / 720) {
+            float xPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * rad)) * cos(rad);
+            float yPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * rad)) * sin(rad);
+            gearShape.vertex(xPos, yPos);
         }
-        return teeth;
+    }
+
+    private void removeInnerCircle(final Gear gear,final  PShape gearShape) {
+        for (float rad=TWO_PI; rad>=0; rad-=TWO_PI/60) {
+            float xPos =  cos(rad) * gear.getRadius() / 2;
+            float yPos =  sin(rad) * gear.getRadius() / 2;
+            gearShape.vertex(xPos, yPos);
+        }
     }
 }
