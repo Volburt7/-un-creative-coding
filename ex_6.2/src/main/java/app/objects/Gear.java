@@ -43,7 +43,9 @@ public class Gear {
 
     private int calculateToothCount(final float radius) {
         final float circumcise = TWO_PI * radius;
-        return Math.round(circumcise / TOOTH_SIZE / 2);
+        final int tooth = Math.round(circumcise / TOOTH_SIZE / 4);
+        System.out.println(tooth);
+        return tooth;
     }
 
     public void updateSize(final float radius) {

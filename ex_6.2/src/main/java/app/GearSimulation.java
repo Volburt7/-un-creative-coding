@@ -113,7 +113,7 @@ public class GearSimulation extends PApplet {
         ellipse(0, 0, outerRadius, outerRadius);
         outerCircle.beginContour();
         fill(g.backgroundColor);
-        ellipse(0, 0, outerRadius/2, outerRadius/2);
+        ellipse(0, 0, outerRadius / 2, outerRadius / 2);
         outerCircle.endContour();
         outerCircle.endShape(CLOSE);
         return outerCircle;
@@ -121,19 +121,19 @@ public class GearSimulation extends PApplet {
 
     private List<PShape> getTeeth(final Gear gear) {
         final List<PShape> teeth = new ArrayList<>();
-        final float degreePerTeeth = TWO_PI/gear.getToothCount()*2;
-        System.out.println(gear.getToothCount());
+
         fill(100);
         rectMode(RADIUS);
 
-        for (int i = 1; i <= gear.getToothCount(); i++) {
+        final float deltaRadians = TWO_PI / gear.getToothCount();
+
+        for (float radians = gear.getCurrentRotation(); radians <= TWO_PI + gear.getCurrentRotation(); radians+=deltaRadians) {
             final PShape tooth = createShape();
             tooth.beginShape();
-            final float curRotation = degreePerTeeth * i + gear.getCurrentRotation();
             pushMatrix();
-            translate(gear.getRadius() * cos(curRotation), gear.getRadius() * sin(curRotation));
-            rotate(curRotation);
-            rect(0, 0, Gear.TOOTH_SIZE - 2, Gear.TOOTH_SIZE - 2);
+            translate(gear.getRadius() * cos(radians), gear.getRadius() * sin(radians));
+            rotate(radians);
+            rect(0, 0, Gear.TOOTH_SIZE*2.5f, Gear.TOOTH_SIZE);
             popMatrix();
             tooth.endShape();
             teeth.add(tooth);
