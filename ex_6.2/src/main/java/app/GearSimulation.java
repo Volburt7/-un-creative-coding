@@ -92,31 +92,22 @@ public class GearSimulation extends PApplet {
     private PShape getGearShape(final Gear gear) {
         final PShape gearShape = createShape();
 
-        final List<PShape> cogs = getTeeth(gear);
-        final PShape outerCircle = getOuterCircle(gear.getRadius());
-
         gearShape.beginShape();
-        cogs.forEach(gearShape::addChild);
-        gearShape.addChild(outerCircle);
+        for (float rad=0.0f; rad<=TWO_PI; rad+=TWO_PI/180) {
+            float xPos = cos(rad) * gear.getRadius();
+            float yPos = sin(rad) * gear.getRadius();
+            gearShape.vertex(xPos, yPos);
+        }
+
+        gearShape.beginContour();
+        for (float rad=TWO_PI; rad>0; rad-=TWO_PI/180) {
+            float xPos =  cos(rad) * gear.getRadius() / 2;
+            float yPos =  sin(rad) * gear.getRadius() / 2;
+            gearShape.vertex(xPos, yPos);
+        }
+        gearShape.endContour();
         gearShape.endShape(CLOSE);
-
         return gearShape;
-    }
-
-    private PShape getOuterCircle(final float outerRadius) {
-        final PShape outerCircle = createShape();
-
-        ellipseMode(RADIUS);
-        fill(100);
-
-        outerCircle.beginShape();
-        ellipse(0, 0, outerRadius, outerRadius);
-        outerCircle.beginContour();
-        fill(g.backgroundColor);
-        ellipse(0, 0, outerRadius / 2, outerRadius / 2);
-        outerCircle.endContour();
-        outerCircle.endShape(CLOSE);
-        return outerCircle;
     }
 
     private List<PShape> getTeeth(final Gear gear) {
