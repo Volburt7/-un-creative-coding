@@ -1,5 +1,8 @@
 package app.objects;
 
+import app.MyConsts;
+import app.enums.Direction;
+import app.enums.GearCreationState;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,45 +16,33 @@ public class Gear {
     @Getter(AccessLevel.NONE)
     public final static int TOOTH_SIZE = 15;
 
-    private final int positionX;
-    private final int positionY;
+    private float positionX;
+    private float positionY;
+    private GearCreationState gearCreationState;
     private int toothCount;
     private float radius;
-    private float currentRotation;
+    private float radiansOffset;
 
-    public Gear(final Gear gear) {
-        this.positionX = gear.getPositionX();
-        this.positionY = gear.getPositionY();
-        this.currentRotation = gear.getCurrentRotation();
-        this.toothCount = gear.getToothCount();
-        this.radius = gear.getRadius();
-    }
+    private boolean isMotor;
+    private Direction direction;
+    private int rpm;
 
-    public Gear(int positionX, int positionY, final float radius) {
+    public Gear(final float positionX, final float positionY, final float radius, final float radiansOffset, final GearCreationState gearCreationState) {
         this.positionX = positionX;
         this.positionY = positionY;
-        this.currentRotation = 0;
-        this.toothCount = calculateToothCount(radius);
-        this.radius = this.toothCount * TOOTH_SIZE / PI;
-    }
-
-    public Gear(int positionX, int positionY, final float radius, float currentRotation) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.currentRotation = currentRotation;
+        this.gearCreationState = gearCreationState;
+        this.radiansOffset = radiansOffset;
         this.toothCount = calculateToothCount(radius);
         this.radius = this.toothCount * TOOTH_SIZE / PI;
     }
 
     private int calculateToothCount(final float radius) {
         final float circumcise = TWO_PI * radius;
-        final int tooth = Math.round(circumcise / TOOTH_SIZE / 4);
-        return tooth;
+        return Math.round(circumcise / TOOTH_SIZE / 4);
     }
 
     public void updateSize(final float radius) {
         this.toothCount = calculateToothCount(radius);
         this.radius = this.toothCount * TOOTH_SIZE / PI;
     }
-
 }

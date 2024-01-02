@@ -1,34 +1,41 @@
 package app.builders;
 
+import app.enums.GearCreationState;
 import app.objects.Gear;
 
 public class GearBuilder {
-    private int positionX;
-    private int positionY;
+    private float positionX;
+    private float positionY;
+    private GearCreationState gearCreationState;
     private float radius;
-    private float currentRotation;
+    private float radiansOffset;
 
-    public GearBuilder setPositionX(int positionX) {
+    public GearBuilder withPositionX(final float positionX) {
         this.positionX = positionX;
         return this;
     }
 
-    public GearBuilder setPositionY(int positionY) {
+    public GearBuilder withPositionY(final float positionY) {
         this.positionY = positionY;
         return this;
     }
 
-    public GearBuilder setRadius(float radius) {
+    public GearBuilder withGearCreationState(final GearCreationState gearCreationState) {
+        this.gearCreationState = gearCreationState;
+        return this;
+    }
+
+    public GearBuilder withRadius(final float radius) {
         this.radius = radius;
         return this;
     }
 
-    public GearBuilder setCurrentRotation(float currentRotation) {
-        this.currentRotation = currentRotation;
+    public GearBuilder withRadiansOffset(final float radiansOffset) {
+        this.radiansOffset = radiansOffset;
         return this;
     }
 
     public Gear build() {
-        return new Gear(this.positionX, this.positionY, this.radius, this.currentRotation);
+        return new Gear(this.positionX, this.positionY, this.radius, this.radiansOffset, this.gearCreationState);
     }
 }
