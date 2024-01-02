@@ -65,7 +65,6 @@ public class GearSimulation extends PApplet {
                     case TYPE -> dynamicGearHolder.updateType();
                     case DIRECTION -> dynamicGearHolder.updateDirection();
                     case SPEED -> dynamicGearHolder.updateSpeed(mouseEvent.getCount());
-                    default -> LOG.warn("Not sure...");
                 }
             }
         }
@@ -74,7 +73,9 @@ public class GearSimulation extends PApplet {
     @Override
     public void mouseClicked(final MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == LEFT && creationInProgress) {
-            continueGearCreation();
+            if(!GearCreationState.SIZE.equals(dynamicGearHolder.getGear().getGearCreationState())) {
+                continueGearCreation();
+            }
         }
     }
 
@@ -96,6 +97,7 @@ public class GearSimulation extends PApplet {
         if(GearCreationState.CREATED.equals(gearInCreation.getGearCreationState())) {
             creationInProgress = false;
             gears.add(gearInCreation);
+            // TODO: Implement List logic here to make it linked or somewhat
         }
     }
 
@@ -197,10 +199,11 @@ public class GearSimulation extends PApplet {
                 }
             }
             case DIRECTION -> {
+                // TODO: img
                 if (Direction.LEFT.equals(gear.getDirection())) {
-                    text("\u2190", 0, 0);
+                    text("L", 0, 0);
                 } else {
-                    text("\u2192", 0, 0);
+                    text("R", 0, 0);
                 }
             }
             case SPEED, CREATED -> text(round(gear.getRpm()), 0, yTextOffset);
