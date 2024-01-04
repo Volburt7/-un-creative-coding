@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 import processing.core.PShape;
+import processing.core.PVector;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class GearSimulation extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
 
+    private final boolean HIDDEN_MODE = false;
     final List<Gear> gears = new ArrayList<>();
     final DynamicGearHolder dynamicGearHolder = new DynamicGearHolder();
 
@@ -77,15 +79,19 @@ public class GearSimulation extends PApplet {
                 continueGearCreation();
             }
         }
+        if (mouseEvent.getButton() == RIGHT && creationInProgress) {
+            creationInProgress = false;
+        }
     }
 
     @Override
     public void keyPressed(final KeyEvent keyEvent) {
-        LOG.info("Pressed keycode {}", keyEvent.getKeyCode());
+        LOG.debug("Pressed keycode {}", keyEvent.getKeyCode());
         if (creationInProgress) {
             switch (keyEvent.getKeyCode()) {
                 case BACKSPACE -> creationInProgress = false;
-                case ENTER -> continueGearCreation();
+                case ENTER, 32 -> continueGearCreation();
+                case 116 -> updateGearList(); // F5 for reload
             }
         }
     }
@@ -97,24 +103,92 @@ public class GearSimulation extends PApplet {
         if(GearCreationState.CREATED.equals(gearInCreation.getGearCreationState())) {
             creationInProgress = false;
             gears.add(gearInCreation);
-            // TODO: Implement List logic here to make it linked or somewhat
+            updateGearList();
         }
     }
 
+    void updateGearList() {
+        final List<Gear> updatedGears = new ArrayList<>();
+        final List<List<Gear>> initialMotorChain = getInitialMotorChains();
+
+        initialMotorChain.forEach(gearChain -> {
+            final Gear motor = gearChain.get(0);
+            gearChain.remove(motor);
+            updatedGears.add(motor);
+            if(!gearChain.isEmpty()) {
+                translateGearRotation(motor, gearChain, updatedGears);
+            }
+        });
+    }
+
+    private List<List<Gear>> getInitialMotorChains() {
+        final List<List<Gear>> gearChains = new ArrayList<>();
+        gears.forEach(gear -> {
+            if(gear.isMotor()) {
+                final List<Gear> gearChain = new ArrayList<>();
+                gearChain.add(gear);
+                gearChain.addAll(getSurroundingGears(gear));
+                gearChains.add(gearChain);
+            }
+        });
+        return gearChains;
+    }
+
+    private List<Gear> getSurroundingGears(final Gear gear) {
+        final List<Gear> gearChain = new ArrayList<>();
+        gears.forEach(g -> {
+            if(!g.equals(gear) && isConnected(gear, g)) {
+                gearChain.add(g);
+            }
+        });
+        return gearChain;
+    }
+
+    private void translateGearRotation(final Gear motor, final List<Gear> rotateCandidates, final List<Gear> updatedGears) {
+         rotateCandidates.forEach(gear -> {
+             if(!updatedGears.contains(gear)) {
+                 final float translationRatio = (float) motor.getToothCount() / (float) gear.getToothCount();
+                 gear.setRpm(motor.getRpm() * translationRatio);
+                 gear.setDirection(Direction.LEFT.equals(motor.getDirection()) ? Direction.RIGHT : Direction.LEFT);
+                 gear.setRadiansOffset(calculateNewOffset(gear, motor));
+                 updatedGears.add(gear);
+                 translateGearRotation(gear, getSurroundingGears(gear), updatedGears);
+             }
+        });
+    }
+
+    private float calculateNewOffset(final Gear gearToUpdate, final Gear motor) {
+        final PVector v1 = new PVector(gearToUpdate.getPositionX() + gearToUpdate.getRadius(), gearToUpdate.getPositionY()).sub(gearToUpdate.getPositionX(), gearToUpdate.getPositionY());
+        final PVector v2 = new PVector(gearToUpdate.getPositionX(), gearToUpdate.getPositionY()).sub(motor.getPositionX(), motor.getPositionY());
+        float radMG = PVector.angleBetween(v1, v2);
+        if (motor.getPositionY() > gearToUpdate.getPositionY()) {
+            radMG = TWO_PI - radMG;
+        }
+        final float radGM = (radMG + PI) % TWO_PI;
+
+        // TODO: fix this...
+        final float radByTooth = radMG / TWO_PI / motor.getToothCount();
+        final float singleSinOffset = radMG - ((int) radByTooth * radMG) + (TWO_PI / motor.getToothCount() / 2);
+        return radGM + singleSinOffset;
+    }
+
+    private boolean isConnected(final Gear gear1, final Gear gear2) {
+        final float dist = dist(gear1.getPositionX(), gear1.getPositionY(), gear2.getPositionX(), gear2.getPositionY());
+        final float radiusSum = gear1.getRadius() + gear2.getRadius() + 2 * Gear.TOOTH_SIZE;
+        return dist < radiusSum;
+    }
 
     @Override
     public void setup() {
         frameRate(MyConsts.FPS);
         gears.clear();
-        gears.add(new Gear(400, 300, 200, 0, GearCreationState.CREATED));
     }
 
     @Override
     public void draw() {
         background(50);
-        fill(100);
+        fill(130);
         noStroke();
-
         gears.forEach(this::drawGear);
 
         if (creationInProgress) {
@@ -124,19 +198,33 @@ public class GearSimulation extends PApplet {
 
     private void drawGear(final Gear gear) {
         pushMatrix();
+
         translate(gear.getPositionX(), gear.getPositionY());
         shape(getGearShape(gear));
-        drawIntoInnerCircle(gear);
-        popMatrix();
-        if(gear.isMotor()) {
-            final float scaledRPM = (TWO_PI / MyConsts.FPS / 60) * gear.getRpm();
-            if (Direction.LEFT.equals(gear.getDirection())) {
-                gear.setRadiansOffset((gear.getRadiansOffset() + scaledRPM) % TWO_PI);
-            } else {
-                gear.setRadiansOffset((gear.getRadiansOffset() - scaledRPM) % TWO_PI);
-            }
+        if(!HIDDEN_MODE) {
+            drawIntoInnerCircle(gear);
         }
 
+        popMatrix();
+
+        // TODO: Improve
+        if (Direction.LEFT.equals(gear.getDirection())) {
+            final float scaledRPM = (TWO_PI / MyConsts.FPS / 60) * gear.getRpm();
+            gear.setRadiansOffset((gear.getRadiansOffset() + scaledRPM) % TWO_PI);
+        } else if (Direction.RIGHT.equals(gear.getDirection())) {
+            final float scaledRPM = (TWO_PI / MyConsts.FPS / 60) * gear.getRpm();
+            gear.setRadiansOffset((gear.getRadiansOffset() - scaledRPM) % TWO_PI);
+        }
+    }
+
+    private void drawRedDot(Gear gear) {
+        stroke(255, 0, 0);
+        strokeWeight(3L);
+        final float rad = gear.getRadiansOffset();
+        float xPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * cos(rad);
+        float yPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * sin(rad);
+        point(xPos, yPos);
+        noStroke();
     }
 
     private PShape getGearShape(final Gear gear) {

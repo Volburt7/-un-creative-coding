@@ -1,11 +1,12 @@
 package app.objects;
 
-import app.MyConsts;
 import app.enums.Direction;
 import app.enums.GearCreationState;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 import static processing.core.PConstants.PI;
 import static processing.core.PConstants.TWO_PI;
@@ -16,6 +17,8 @@ public class Gear {
     @Getter(AccessLevel.NONE)
     public final static int TOOTH_SIZE = 15;
 
+    private final UUID uuid;
+
     private float positionX;
     private float positionY;
     private GearCreationState gearCreationState;
@@ -25,15 +28,16 @@ public class Gear {
 
     private boolean isMotor;
     private Direction direction;
-    private int rpm;
+    private float rpm;
 
     public Gear(final float positionX, final float positionY, final float radius, final float radiansOffset, final GearCreationState gearCreationState) {
+        this.uuid = UUID.randomUUID();
         this.positionX = positionX;
         this.positionY = positionY;
         this.gearCreationState = gearCreationState;
-        this.radiansOffset = radiansOffset;
         this.toothCount = calculateToothCount(radius);
         this.radius = this.toothCount * TOOTH_SIZE / PI;
+        this.radiansOffset = radiansOffset;
     }
 
     private int calculateToothCount(final float radius) {
@@ -44,5 +48,10 @@ public class Gear {
     public void updateSize(final float radius) {
         this.toothCount = calculateToothCount(radius);
         this.radius = this.toothCount * TOOTH_SIZE / PI;
+    }
+
+    public void setRadiansOffset(float offset) {
+        final float offsetSplit = offset / (TWO_PI / this.getToothCount());
+        this.radiansOffset = offset - (int) offsetSplit * (TWO_PI / this.getToothCount());
     }
 }

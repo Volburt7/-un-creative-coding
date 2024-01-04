@@ -53,7 +53,7 @@ public class DynamicGearHolder {
     }
 
     public void updateSpeed(final int speedChange) {
-        final int newRPM = gear.getRpm() + speedChange;
+        final float newRPM = gear.getRpm() + speedChange;
         if(newRPM >= 1) {
             gear.setRpm(newRPM);
         }
