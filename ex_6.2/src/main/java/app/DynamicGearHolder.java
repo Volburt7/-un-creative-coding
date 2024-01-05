@@ -1,6 +1,6 @@
 package app;
 
-import app.builders.GearBuilder;
+import app.objects.builders.GearBuilder;
 import app.enums.Direction;
 import app.enums.GearCreationState;
 import app.objects.Gear;

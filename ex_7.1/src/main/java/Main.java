@@ -1,3 +1,7 @@
+import app.SmokeOnTheWater;
+
 public class Main {
-//https://fbe-gitlab.hs-weingarten.de/scherzer/creative-coding/-/blob/master/7-particleSystem/particleSystem.md
+    public static void main(String[] args) {
+        SmokeOnTheWater.main(SmokeOnTheWater.class);
+    }
 }

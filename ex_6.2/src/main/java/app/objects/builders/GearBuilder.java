@@ -1,4 +1,4 @@
-package app.builders;
+package app.objects.builders;
 
 import app.enums.GearCreationState;
 import app.objects.Gear;
