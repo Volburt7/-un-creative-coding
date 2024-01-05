@@ -1,28 +1,35 @@
 package app;
 
-import app.obj.Fluid;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 
 public class Something extends PApplet {
 
-    final AnimalManager animalManager = new AnimalManager();
-    final FluidManager fluidManager = new FluidManager();
+    PImage background;
+    AnimalManager animalManager;
+    FluidManager fluidManager;
 
     @Override
     public void settings() {
-        size(777, 444);
+        size(Consts.WIDTH, Consts.HEIGHT);
     }
 
     @Override
     public void setup() {
         frameRate(60);
+        background = loadImage("background.jpg");
+        background.resize(Consts.WIDTH, Consts.HEIGHT);
+
+        animalManager = new AnimalManager(this);
+        fluidManager = new FluidManager();
+
+        animalManager.initializeAnimals();
     }
 
     @Override
     public void draw() {
-        background(50);
-        fill(130);
-        noStroke();
+        background(background);
+        animalManager.update();
     }
 }

@@ -12,7 +12,9 @@ public class Fluid {
     private float rippleSize;
     private int ttl;
 
-    public Fluid(final PVector position) {
+    public Fluid(PVector position, float rippleSize, int ttl) {
         this.position = position;
+        this.rippleSize = rippleSize;
+        this.ttl = ttl;
     }
 }
