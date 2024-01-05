@@ -15,11 +15,9 @@ import java.util.List;
 
 public class GearSimulation extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
-
-    private final boolean HIDDEN_MODE = false;
     final List<Gear> gears = new ArrayList<>();
     final DynamicGearHolder dynamicGearHolder = new DynamicGearHolder();
-
+    private final boolean HIDDEN_MODE = false;
     boolean creationInProgress = false;
 
 
@@ -156,7 +154,7 @@ public class GearSimulation extends PApplet {
     }
 
     private float calculateNewOffset(final Gear gear, final Gear motor) {
-        final float translationRatio =  (float) motor.getToothCount() / (float) gear.getToothCount();
+        final float translationRatio = (float) motor.getToothCount() / (float) gear.getToothCount();
         final float newOffset = motor.getRadiansOffset() * translationRatio - (TWO_PI / gear.getToothCount() / 2);
         LOG.info("Going from {} to {}. Motor offset was {} and gear offset {} -> {}", motor.getToothCount(), gear.getToothCount(), motor.getRadiansOffset(), gear.getRadiansOffset(), newOffset);
         return newOffset % TWO_PI;

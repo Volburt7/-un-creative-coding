@@ -29,8 +29,8 @@ public class Fractal extends PApplet {
             for (int h = startY; h < limitY; h += inc) {
                 if (level <= 0) {
                     ellipse(w, h, inc, inc);
-                    for(float sX = -1; sX < 2; sX += 2) {
-                        for(float sY = -1; sY < 2; sY += 2) {
+                    for (float sX = -1; sX < 2; sX += 2) {
+                        for (float sY = -1; sY < 2; sY += 2) {
                             ellipse(w, h, inc, inc);
                         }
                     }

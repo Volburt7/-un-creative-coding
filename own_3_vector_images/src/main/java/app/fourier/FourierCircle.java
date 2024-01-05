@@ -5,6 +5,7 @@ class FourierCircle {
     private final Complex sample;
     private final double radius;
     private final int k;
+
     public FourierCircle(Complex position, Complex sample, int k) {
         this.position = position;
         this.sample = sample;

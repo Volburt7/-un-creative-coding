@@ -17,14 +17,15 @@ public class ChainedVector {
         this.velocity = velocity;
     }
 
-    public ChainedVector() {}
+    public ChainedVector() {
+    }
 
     public ChainedVector(final double xFrom, final double yFrom, final double xTo, final double yTo) {
-        this.x = (float)xTo;
-        this.y = (float)yTo;
+        this.x = (float) xTo;
+        this.y = (float) yTo;
         this.parent = new ChainedVector();
-        this.parent.x = (float)xFrom;
-        this.parent.y = (float)yFrom;
+        this.parent.x = (float) xFrom;
+        this.parent.y = (float) yFrom;
     }
 
     public ChainedVector(final float xTo, final float yTo) {
@@ -37,16 +38,10 @@ public class ChainedVector {
     }
 
     public void update() {
-        if(parent != null) {
+        if (parent != null) {
             this.x = this.parent.getX() + this.parent.getLength() * (float) cos(this.parent.getAngle());
             this.y = this.parent.getY() + this.parent.getLength() * (float) sin(this.parent.getAngle());
         }
-    }
-
-    public void setParent(final ChainedVector parent) {
-        this.x = parent.getXTo();
-        this.y = parent.getYTo();
-        this.parent = parent;
     }
 
     public float getXTo() {
@@ -99,5 +94,11 @@ public class ChainedVector {
 
     public ChainedVector getParent() {
         return parent;
+    }
+
+    public void setParent(final ChainedVector parent) {
+        this.x = parent.getXTo();
+        this.y = parent.getYTo();
+        this.parent = parent;
     }
 }

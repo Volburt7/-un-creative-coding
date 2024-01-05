@@ -41,31 +41,31 @@ class FourierCircle {
         this.sample = sample;
 
         this.centre = document.createElementNS(FourierDiagram.svgNamespace, "circle");
-        this.centre.setAttribute ("class", "centrePoint");
-        this.centre.setAttribute ("r", "2");
+        this.centre.setAttribute("class", "centrePoint");
+        this.centre.setAttribute("r", "2");
 
         this.circle = document.createElementNS(FourierDiagram.svgNamespace, "circle");
-        this.circle.setAttribute ("class", "bigCircle");
-        this.circle.setAttribute ("r", `${Math.sqrt(this.sample.im * this.sample.im + this.sample.re * this.sample.re)}`);
+        this.circle.setAttribute("class", "bigCircle");
+        this.circle.setAttribute("r", `${Math.sqrt(this.sample.im * this.sample.im + this.sample.re * this.sample.re)}`);
 
         this.radius = document.createElementNS(FourierDiagram.svgNamespace, "line");
-        this.radius.setAttribute ("class", "radius");
+        this.radius.setAttribute("class", "radius");
 
         this.update(position, this.sample);
     }
 
     update(position, end) {
-        this.centre.setAttribute ("cx", `${position.re}`);
-        this.centre.setAttribute ("cy", `${position.im}`);
+        this.centre.setAttribute("cx", `${position.re}`);
+        this.centre.setAttribute("cy", `${position.im}`);
 
-        this.circle.setAttribute ("cx", `${position.re}`);
-        this.circle.setAttribute ("cy", `${position.im}`);
+        this.circle.setAttribute("cx", `${position.re}`);
+        this.circle.setAttribute("cy", `${position.im}`);
 
-        this.radius.setAttribute ("x1", `${position.re}`);
-        this.radius.setAttribute ("y1", `${position.im}`);
+        this.radius.setAttribute("x1", `${position.re}`);
+        this.radius.setAttribute("y1", `${position.im}`);
 
-        this.radius.setAttribute ("x2", `${end.re}`);
-        this.radius.setAttribute ("y2", `${end.im}`);
+        this.radius.setAttribute("x2", `${end.re}`);
+        this.radius.setAttribute("y2", `${end.im}`);
     }
 }
 
@@ -90,9 +90,9 @@ class FourierDiagram {
         const N = polyline.length;
         const transform = [];
         for (var k = 0; k < N; k++) {
-            var current = new Complex (0, 0);
+            var current = new Complex(0, 0);
             for (var n = 0; n < N; n++) {
-                var coef = new Complex (0, -2 * Math.PI * k * n / N)
+                var coef = new Complex(0, -2 * Math.PI * k * n / N)
                 current = current.add(coef.exp().mul(polyline[n]));
             }
 
@@ -149,14 +149,14 @@ class FourierDiagram {
         const traceLine = document.createElementNS(FourierDiagram.svgNamespace, "polyline");
         traceLine.setAttribute("class", "traceLine");
         traceLine.setAttribute("points", "0,0 ");
-        elemSVG.appendChild (traceLine);
+        elemSVG.appendChild(traceLine);
 
         let tracedPath = "";
         let time = await FourierDiagram.waitForFrame();
         const endTime = time + this.period;
 
         while (time < endTime) {
-            let acc = new Complex (0, 0);
+            let acc = new Complex(0, 0);
 
             const n = time % this.period;
             const N = this.transform.length;
@@ -168,17 +168,17 @@ class FourierDiagram {
                 }
 
                 const oldAcc = acc;
-                const angle = new Complex (0, 2 * Math.PI * k * n / this.period);
+                const angle = new Complex(0, 2 * Math.PI * k * n / this.period);
                 acc = acc.add(angle.exp().mul(circle.sample));
 
                 circle.update(oldAcc, acc);
             });
 
-            endCircle.setAttribute ("cx", acc.re);
-            endCircle.setAttribute ("cy", acc.im);
+            endCircle.setAttribute("cx", acc.re);
+            endCircle.setAttribute("cy", acc.im);
 
             tracedPath += ` ${acc.re},${acc.im}`;
-            traceLine.setAttribute ("points", tracedPath);
+            traceLine.setAttribute("points", tracedPath);
 
             time = await FourierDiagram.waitForFrame();
         }

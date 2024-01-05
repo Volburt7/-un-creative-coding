@@ -13,12 +13,11 @@ import java.util.List;
 // inspiration from https://andymac-2.github.io/fourier-polygon/writeup/
 public class Processing extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(Processing.class);
-
+    private final int FRAMERATEE = 60;
     private List<ChainedVector> vectors = new ArrayList<>();
     private FourierTransform fourierTransform;
     private PGraphics consistentLayer;
     private PGraphics backgroundLayer;
-    private final int FRAMERATEE = 60;
     private boolean showVectors = false;
 
     @Override
@@ -36,8 +35,8 @@ public class Processing extends PApplet {
     }
 
     void createInitialFourierTransform() {
-        double[][] rectangleCords = {{50,0}, {50,50}, {0,50}, {-50,50}, {-50,0}, {-50,-50}, {0,-50}, {50,-50}};
-        fourierTransform = new FourierTransform(rectangleCords, (double) 1/FRAMERATEE);
+        double[][] rectangleCords = {{50, 0}, {50, 50}, {0, 50}, {-50, 50}, {-50, 0}, {-50, -50}, {0, -50}, {50, -50}};
+        fourierTransform = new FourierTransform(rectangleCords, (double) 1 / FRAMERATEE);
     }
 
     void createInitialVectorsRandom() {
@@ -78,10 +77,10 @@ public class Processing extends PApplet {
 //            return;
 //        }
 
-        if(fourierTransform != null) {
-            int n =  (int) (frameCount % frameRate);
+        if (fourierTransform != null) {
+            int n = (int) (frameCount % frameRate);
             ChainedVector lastVector;
-            if(vectors.isEmpty()) {
+            if (vectors.isEmpty()) {
                 lastVector = fourierTransform.getLastTransformers();
             } else {
                 lastVector = vectors.get(vectors.size() - 1);
@@ -157,6 +156,7 @@ public class Processing extends PApplet {
         image(consistentLayer, 0, 0);
 //        LOG.info("\nX '{}' to '{}' \nY '{}' to '{}'", lastX, lastVector.getXTo(), lastY, lastVector.getYTo());
     }
+
     private void resetConsistentLayer() {
         consistentLayer.beginDraw();
         consistentLayer.background(255);
