@@ -15,9 +15,7 @@ import static processing.core.PConstants.TWO_PI;
 @Setter
 public class Gear {
     @Getter(AccessLevel.NONE)
-    public final static int TOOTH_SIZE = 15;
-
-    private final UUID uuid;
+    public final static int TOOTH_SIZE = 20;
 
     private float positionX;
     private float positionY;
@@ -31,7 +29,6 @@ public class Gear {
     private float rpm;
 
     public Gear(final float positionX, final float positionY, final float radius, final float radiansOffset, final GearCreationState gearCreationState) {
-        this.uuid = UUID.randomUUID();
         this.positionX = positionX;
         this.positionY = positionY;
         this.gearCreationState = gearCreationState;
@@ -48,10 +45,5 @@ public class Gear {
     public void updateSize(final float radius) {
         this.toothCount = calculateToothCount(radius);
         this.radius = this.toothCount * TOOTH_SIZE / PI;
-    }
-
-    public void setRadiansOffset(float offset) {
-        final float offsetSplit = offset / (TWO_PI / this.getToothCount());
-        this.radiansOffset = offset - (int) offsetSplit * (TWO_PI / this.getToothCount());
     }
 }
