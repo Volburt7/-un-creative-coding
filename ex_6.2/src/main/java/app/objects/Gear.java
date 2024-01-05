@@ -6,8 +6,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
 import static processing.core.PConstants.PI;
 import static processing.core.PConstants.TWO_PI;
 

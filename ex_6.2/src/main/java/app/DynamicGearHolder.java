@@ -1,9 +1,9 @@
 package app;
 
-import app.objects.builders.GearBuilder;
 import app.enums.Direction;
 import app.enums.GearCreationState;
 import app.objects.Gear;
+import app.objects.builders.GearBuilder;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
