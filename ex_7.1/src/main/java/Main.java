@@ -1,7 +1,7 @@
-import app.SmokeOnTheWater;
+import app.Something;
 
 public class Main {
     public static void main(String[] args) {
-        SmokeOnTheWater.main(SmokeOnTheWater.class);
+        Something.main(Something.class);
     }
 }

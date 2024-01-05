@@ -1,13 +1,13 @@
 package app;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import app.obj.Fluid;
 import processing.core.PApplet;
 
 
-public class SmokeOnTheWater extends PApplet {
-    private final static Logger LOG = LoggerFactory.getLogger(SmokeOnTheWater.class);
+public class Something extends PApplet {
 
+    final AnimalManager animalManager = new AnimalManager();
+    final FluidManager fluidManager = new FluidManager();
 
     @Override
     public void settings() {
