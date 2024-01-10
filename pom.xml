@@ -26,11 +26,13 @@
         <module>ex_5.3</module>
         <module>ex_6.1</module>
         <module>ex_6.2</module>
-        <module>ex_7.1</module>
+        <module>ex_7.2</module>
         <module>ex_8.1</module>
         <module>own_2_random_vectors</module>
         <module>own_1_prime_spiral</module>
         <module>own_3_vector_images</module>
+        <module>ex_7.1</module>
+        <module>own_0_test_stuff</module>
     </modules>
 
     <properties>

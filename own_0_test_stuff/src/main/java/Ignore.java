@@ -1,11 +1,9 @@
-package app;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 
-public class AgendSpaghettiCode extends PApplet {
-    private final static Logger LOG = LoggerFactory.getLogger(AgendSpaghettiCode.class);
+public class Ignore extends PApplet {
+    private final static Logger LOG = LoggerFactory.getLogger(Ignore.class);
 
     @Override
     public void settings() {

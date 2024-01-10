@@ -1,13 +1,21 @@
 package app.obj;
 
 import lombok.AllArgsConstructor;
-import processing.core.PVector;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @AllArgsConstructor
 public class Fluid {
+    private float x, y;
+    private int lifeSpan;
 
-    private PVector position;
-    private float rippleSize;
-    private int ttl;
+    public void update() {
+        this.lifeSpan--;
+    }
 
+    public boolean isActive() {
+        return this.lifeSpan >= 0;
+    }
 }

@@ -1,6 +1,5 @@
 package app;
 
-import app.obj.Animal;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -31,5 +30,6 @@ public class DrawProcessor extends PApplet {
     public void draw() {
         background(background);
         animalManager.update();
+        animalManager.draw();
     }
 }
