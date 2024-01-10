@@ -1,7 +1,9 @@
 package app;
 
 import app.obj.Chicken;
-import app.obj.Eatable;
+import app.obj.Cow;
+import app.obj.Raptor;
+import app.obj.Animal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.core.PImage;
@@ -13,30 +15,70 @@ import java.util.List;
 public class AnimalManager {
     private final static Logger LOG = LoggerFactory.getLogger(AnimalManager.class);
 
-    private final List<Eatable> animals = new ArrayList<>();
+    private final List<Animal> animals = new ArrayList<>();
+    private final DrawProcessor drawProcessor;
 
-    private final Something something;
+    private final PImage chickenImg;
+    private final PImage cowImg;
+    private final PImage raptorImg;
 
-    private final PImage chicken;
-    private final PImage cow;
-    private final PImage raptor;
-
-    public AnimalManager(final Something something) {
-        this.something = something;
-        this.chicken = something.loadImage("chicken.png");
-        this.cow = something.loadImage("cow.png");
-        this.raptor = something.loadImage("raptor.png");
+    public AnimalManager(final DrawProcessor drawProcessor) {
+        this.drawProcessor = drawProcessor;
+        this.chickenImg = drawProcessor.loadImage(Chicken.imagePath);
+        this.cowImg = drawProcessor.loadImage(Cow.imagePath);
+        this.raptorImg = drawProcessor.loadImage(Raptor.imagePath);
     }
 
     public void initializeAnimals() {
-        for (int i = 0; i < 10; i++) {
-            animals.add(new Chicken(this.chicken, new PVector(something.random(0, something.width), something.random(0, something.height)), 30));
+        for (int i = 0; i < Consts.INITIAL_CHICKEN_COUNT; i++) {
+            addAnimalToList(createAnimal(Chicken.class));
         }
+
+        for (int i = 0; i < Consts.INITIAL_COW_COUNT; i++) {
+            addAnimalToList(createAnimal(Cow.class));
+        }
+
+        for (int i = 0; i < Consts.INITIAL_RAPTOR_COUNT; i++) {
+            addAnimalToList(createAnimal(Raptor.class));
+        }
+    }
+
+    private void addAnimalToList(final Animal animal) {
+        if (animal != null && hasNoCollision(animal)) {
+            animals.add(animal);
+        }
+    }
+
+    private Animal createAnimal(final Class<?> animalClass) {
+        if (Chicken.class.equals(animalClass)) {
+            return new Chicken(this.chickenImg.copy(), getRandomPosition());
+        } else if (Cow.class.equals(animalClass)) {
+            return new Cow(this.cowImg.copy(), getRandomPosition());
+        } else if (Raptor.class.equals(animalClass)) {
+            return new Raptor(this.raptorImg.copy(), getRandomPosition());
+        } else {
+            LOG.warn("create animal got the wrong class {}", animalClass.getSimpleName());
+            return null;
+        }
+    }
+
+    private PVector getRandomPosition() {
+        return new PVector(drawProcessor.random(0, drawProcessor.width), drawProcessor.random(0, drawProcessor.height));
+    }
+
+    private boolean hasNoCollision(final Animal animalToCheck) {
+        for (Animal animal : animals) {
+            if (!animal.equals(animalToCheck) &&
+                animalToCheck.getPosition().x <) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void update() {
         animals.forEach(animal -> {
-            something.image(animal.getImage(), animal.getPosition().x, animal.getPosition().y);
+            drawProcessor.image(animal.getImage(), animal.getPosition().x, animal.getPosition().y);
         });
     }
 }

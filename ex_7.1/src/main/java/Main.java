@@ -1,4 +1,4 @@
-import app.Something;
+import app.DrawProcessor;
 
 public class Main {
 
@@ -11,7 +11,7 @@ public class Main {
      *
      * */
     public static void main(String[] args) {
-        Something.main(Something.class);
+        DrawProcessor.main(DrawProcessor.class);
     }
 }
 

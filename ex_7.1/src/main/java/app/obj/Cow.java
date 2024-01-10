@@ -1,10 +1,13 @@
 package app.obj;
 
-//@Getter
-//@Setter
-//public class Cow extends Eatable {
-//    // 50x30
-//    public Cow(PVector position, int size, int ttl) {
-//        super(position, size, ttl);
-//    }
-//}
+import processing.core.PImage;
+import processing.core.PVector;
+
+public class Cow extends Animal {
+    public final static String imagePath = "cow.png";
+    private final static PVector imageRatio = new PVector(5f, 3f);
+
+    public Cow(final PImage image, final PVector position) {
+        super(image, imageRatio, 180, 90, position, 180, 90);
+    }
+}
