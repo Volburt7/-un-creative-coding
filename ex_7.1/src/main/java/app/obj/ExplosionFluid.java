@@ -1,16 +1,16 @@
 package app.obj;
 
+import app.FluidManager;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class ExplosionFluid extends Fluid {
-    private float radius;
+    private float speed;
 
-    public ExplosionFluid(float x, float y, int lifeSpan, float radius) {
-        super(x, y, lifeSpan);
-        this.radius = radius;
+    public ExplosionFluid(final FluidManager fluidManager, final float x, final float y, final int lifeSpan, final float speed) {
+        super(fluidManager, x, y, lifeSpan);
+        this.speed = speed;
     }
 
     @Override

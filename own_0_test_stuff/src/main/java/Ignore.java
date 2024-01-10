@@ -13,6 +13,7 @@ public class Ignore extends PApplet {
     @Override
     public void setup() {
         frameRate(60);
+        background(255, 0, 0, 0.1f);
     }
 
     @Override

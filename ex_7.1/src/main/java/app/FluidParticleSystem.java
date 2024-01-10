@@ -15,9 +15,9 @@ import java.util.List;
 
 public class FluidParticleSystem extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(FluidParticleSystem.class);
-    private final List<Fluid> fluids = new ArrayList<>();
-    private PImage pImageOriginal;
-    private PImage background;
+    private final FluidManager fluidManager = new FluidManager();
+
+
 
     @Override
     public void settings() {
@@ -27,33 +27,24 @@ public class FluidParticleSystem extends PApplet {
     @Override
     public void mouseReleased(final MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == LEFT) {
-            if (round(random(0, 1)) == 0) {
-                fluids.add(new ExplosionFluid(mouseEvent.getX(), mouseEvent.getY(), (int) random(50, 200), random(10, 50)));
-            } else {
-                fluids.add(new PuddleFluid(mouseEvent.getX(), mouseEvent.getY(), (int) random(50, 200), random(10, 50)));
-            }
+            fluidManager.addToList(new PuddleFluid(this.fluidManager, mouseEvent.getX(), mouseEvent.getY(), (int) random(50, 200), random(10, 50)));
+        } else if (mouseEvent.getButton() == RIGHT) {
+            fluidManager.addToList(new ExplosionFluid(this.fluidManager, mouseEvent.getX(), mouseEvent.getY(), (int) random(50, 200), random(10, 50)));
         }
     }
 
     @Override
     public void setup() {
         frameRate(60);
-        pImageOriginal = loadImage("chicken.png");
-
-        background = loadImage("background.jpg");
-        background.resize(1280, 720);
     }
 
     @Override
     public void draw() {
-        image(background, 0, 0);
-        for (int i = 15; i >= 6; i--) {
-            drawImage(i, (i - 6) * 75);
-        }
+        background(20, 30, 140, 140);
 
         final List<Fluid> rf = new ArrayList<>();
 
-        for (Fluid f : fluids) {
+        for (Fluid f : fluidManager.getFluids()) {
             if (f.isActive()) {
                 f.update();
                 drawFluid(f);
@@ -62,23 +53,17 @@ public class FluidParticleSystem extends PApplet {
             }
         }
 
-        rf.forEach(fluids::remove);
+        rf.forEach(fluidManager.getFluids()::remove);
     }
 
-    private void drawImage(final int size, final int y) {
-        PImage copy = pImageOriginal.copy();
-        copy.resize(size * 4, size * 5);
-        image(copy, 0, y);
-    }
-
-    void drawFluid(Fluid f) {
-        if (f instanceof ExplosionFluid) {
+    void drawFluid(final Fluid f) {
+        if (f instanceof ExplosionFluid fluid) {
             fill(255, 0, 0);
-            ellipse(f.getX(), f.getY(), ((ExplosionFluid) f).getRadius(), ((ExplosionFluid) f).getRadius());
-        } else if (f instanceof PuddleFluid) {
+//            ellipse(fluid.getX(), fluid.getY(), fluid.get(), fluid.getRadius());
+        } else if (f instanceof PuddleFluid fluid) {
             fill(0, 0, 255);
-            rectMode(CENTER);
-            rect(f.getX(), f.getY(), ((PuddleFluid) f).getSize(), ((PuddleFluid) f).getSize());
+            ellipseMode(RADIUS);
+            ellipse(fluid.getX(), fluid.getY(), fluid.getRadius(), fluid.getRadius());
         }
     }
 }
