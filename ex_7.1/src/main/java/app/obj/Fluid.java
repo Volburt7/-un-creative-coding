@@ -1,15 +1,17 @@
 package app.obj;
 
 import app.FluidManager;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import static processing.core.PApplet.map;
 
 @Getter
 @Setter
 public class Fluid {
     private final FluidManager fluidManager;
     private final float x, y;
+    private final int initialLifeSpan;
 
     private int lifeSpan;
 
@@ -17,6 +19,7 @@ public class Fluid {
         this.fluidManager = fluidManager;
         this.x = x;
         this.y = y;
+        this.initialLifeSpan = lifeSpan;
         this.lifeSpan = lifeSpan;
     }
 
@@ -26,5 +29,9 @@ public class Fluid {
 
     public boolean isActive() {
         return this.lifeSpan >= 0;
+    }
+
+    public int getLifeSpan() {
+        return (int) map(this.lifeSpan, 0, this.initialLifeSpan, 0, 255);
     }
 }

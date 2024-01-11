@@ -36,6 +36,8 @@ public class FluidParticleSystem extends PApplet {
     @Override
     public void setup() {
         frameRate(60);
+        colorMode(RGB);
+        noStroke();
     }
 
     @Override
@@ -43,17 +45,28 @@ public class FluidParticleSystem extends PApplet {
         background(20, 30, 140, 140);
 
         final List<Fluid> rf = new ArrayList<>();
+        final List<Fluid> toAdd = new ArrayList<>();
+
+        if(frameCount % 60 == 0) {
+            fluidManager.spawnRandomPuddle(this);
+        }
+
 
         for (Fluid f : fluidManager.getFluids()) {
             if (f.isActive()) {
                 f.update();
                 drawFluid(f);
+
+                if (f instanceof PuddleFluid puddle && puddle.shouldRippleNow()) {
+                    toAdd.add(new PuddleFluid(this.fluidManager, puddle.getX(), puddle.getY(), puddle.getInitialLifeSpan(), puddle.getInitialRadius() / 2));
+                }
             } else {
                 rf.add(f);
             }
         }
 
         rf.forEach(fluidManager.getFluids()::remove);
+        toAdd.forEach(fluidManager::addToList);
     }
 
     void drawFluid(final Fluid f) {
@@ -61,7 +74,7 @@ public class FluidParticleSystem extends PApplet {
             fill(255, 0, 0);
 //            ellipse(fluid.getX(), fluid.getY(), fluid.get(), fluid.getRadius());
         } else if (f instanceof PuddleFluid fluid) {
-            fill(0, 0, 255);
+            fill(0, 0, 255, fluid.getLifeSpan());
             ellipseMode(RADIUS);
             ellipse(fluid.getX(), fluid.getY(), fluid.getRadius(), fluid.getRadius());
         }
