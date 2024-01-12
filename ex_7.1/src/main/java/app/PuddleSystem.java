@@ -43,7 +43,7 @@ public class PuddleSystem extends PApplet {
     public void setup() {
         frameRate(60);
         colorMode(RGB);
-        spawnPuddle(width/2, height/2);
+        spawnPuddle(width / 2, height / 2);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class PuddleSystem extends PApplet {
             }
 
             initialPuddles.forEach(initialPuddle -> {
-                if(!puddleManager.positionExists(initialPuddle)) {
+                if (!puddleManager.positionExists(initialPuddle)) {
                     puddleManager.spawnRandomPuddle((int) initialPuddle.getX(), (int) initialPuddle.getY());
                 }
             });

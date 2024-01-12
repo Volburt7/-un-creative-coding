@@ -5,8 +5,8 @@ import processing.core.PApplet;
 public class Fractal extends PApplet {
 
     /*
-    * I copied this from the repo
-    * */
+     * I copied this from the repo
+     * */
 
     @Override
     public void settings() {

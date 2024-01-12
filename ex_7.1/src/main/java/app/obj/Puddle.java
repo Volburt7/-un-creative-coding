@@ -41,10 +41,10 @@ public class Puddle {
     public boolean shouldRipple() {
         return (
                 this.initialRadius >= 5f &&
-                (
-                        this.lifeSpan == (2 * this.initialLifeSpan / 5) ||
-                        this.lifeSpan == (4 * this.initialLifeSpan / 5)
-                )
+                        (
+                                this.lifeSpan == (2 * this.initialLifeSpan / 5) ||
+                                        this.lifeSpan == (4 * this.initialLifeSpan / 5)
+                        )
         );
     }
 }
