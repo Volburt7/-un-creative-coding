@@ -5,6 +5,8 @@ import app.obj.Puddle;
 import java.util.ArrayList;
 import java.util.List;
 
+import static processing.core.PApplet.map;
+
 public class PuddleManager {
     private final static float MIN_STROKE_WEIGHT = 0.5f;
     private final PuddleSystem particleSystem;
@@ -71,8 +73,7 @@ public class PuddleManager {
                 .lifeSpan((int) (puddle.getLifeSpan() * lifespanFactor))
                 .initialRadius(puddle.getRadius() * (1 - radiusFactor))
                 .radius(puddle.getRadius() * (1 - radiusFactor))
-                // TODO: change intensity
-                .intensity(puddle.getIntensity())
+                .intensity(map(puddle.getIntensity(), puddle.getLifeSpan(), puddle.getLifeSpan() * lifespanFactor, puddle.getMinIntensity(), puddle.getMaxIntensity()))
                 .minIntensity(puddle.getMinIntensity() / 2)
                 .maxIntensity(puddle.getMaxIntensity())
                 .velocity(newVelocity > 1 ? newVelocity : 1)
