@@ -14,8 +14,11 @@ public class PuddleSystem extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(PuddleSystem.class);
     private final PuddleManager puddleManager;
 
+    private final List<Puddle> initialPuddles;
+
     public PuddleSystem() {
         this.puddleManager = new PuddleManager(this);
+        initialPuddles = new ArrayList<>();
     }
 
     @Override
@@ -26,38 +29,45 @@ public class PuddleSystem extends PApplet {
     @Override
     public void mouseReleased(final MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == LEFT) {
-            puddleManager.spawnRandomPuddle(mouseEvent.getX(), mouseEvent.getY());
+            spawnPuddle(mouseEvent.getX(), mouseEvent.getY());
         }
+    }
+
+    private void spawnPuddle(final int x, final int y) {
+        final Puddle randomPuddle = puddleManager.createRandomPuddle(x, y);
+        puddleManager.addToList(randomPuddle);
+        initialPuddles.add(randomPuddle);
     }
 
     @Override
     public void setup() {
         frameRate(60);
         colorMode(RGB);
+        spawnPuddle(width/2, height/2);
     }
 
     @Override
     public void draw() {
         background(20, 30, 140, 140);
 
-        final List<Puddle> rf = new ArrayList<>();
-        final List<Puddle> toAdd = new ArrayList<>();
-
         for (Puddle puddle : puddleManager.getPuddles()) {
             if (puddle.isActive()) {
-                puddle.update();
+                puddleManager.updatePuddle(puddle);
                 drawPuddle(puddle);
 
                 if (puddle.shouldRipple()) {
-                    toAdd.add(puddleManager.createNextPuddle(puddle));
+                    puddleManager.addToList(puddleManager.createNextPuddle(puddle));
                 }
             } else {
-                rf.add(puddle);
+                puddleManager.remove(puddle);
             }
-        }
 
-        rf.forEach(puddleManager.getPuddles()::remove);
-        toAdd.forEach(puddleManager::addToList);
+            initialPuddles.forEach(initialPuddle -> {
+                if(!puddleManager.positionExists(initialPuddle)) {
+                    puddleManager.spawnRandomPuddle((int) initialPuddle.getX(), (int) initialPuddle.getY());
+                }
+            });
+        }
     }
 
     void drawPuddle(final Puddle puddle) {

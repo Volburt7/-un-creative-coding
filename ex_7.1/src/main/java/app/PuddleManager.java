@@ -11,41 +11,35 @@ public class PuddleManager {
     private final static float MIN_STROKE_WEIGHT = 0.5f;
     private final PuddleSystem particleSystem;
     private final List<Puddle> puddles;
-    private final boolean collisionEnabled;
 
     public PuddleManager(final PuddleSystem particleSystem) {
         this.particleSystem = particleSystem;
         this.puddles = new ArrayList<>();
-        this.collisionEnabled = false;
     }
 
     protected List<Puddle> getPuddles() {
-        return puddles;
+        return new ArrayList<>(puddles);
     }
-
-//    public List<Puddle> getPuddlesCopy() {
-//        return new ArrayList<>(puddles);
-//    }
 
     public void addToList(final Puddle fluid) {
         puddles.add(fluid);
     }
 
     public void spawnRandomPuddle(final int x, final int y) {
-        puddles.add(createRandomPuddle(this.particleSystem, x, y));
+        puddles.add(createRandomPuddle(x, y));
     }
 
-    public void spawnRandomPuddle(final PuddleSystem particleSystem) {
-        final int x = (int) particleSystem.random(0, particleSystem.width);
-        final int y = (int) particleSystem.random(0, particleSystem.height);
-        puddles.add(createRandomPuddle(particleSystem, x, y));
+    public void spawnRandomPuddle() {
+        final int x = (int) this.particleSystem.random(0, this.particleSystem.width);
+        final int y = (int) this.particleSystem.random(0, this.particleSystem.height);
+        puddles.add(createRandomPuddle(x, y));
     }
 
-    private Puddle createRandomPuddle(final PuddleSystem particleSystem, final int x, final int y) {
-        final int lifeSpan = (int) particleSystem.random(50, 400);
-        final float radius = particleSystem.random(10, 50);
-        final float maxIntensity = particleSystem.random(1, 3);
-        final float velocity = particleSystem.random(1, 2);
+    public Puddle createRandomPuddle(final int x, final int y) {
+        final int lifeSpan = (int) this.particleSystem.random(50, 400);
+        final float radius = this.particleSystem.random(10, 50);
+        final float maxIntensity = this.particleSystem.random(1, 3);
+        final float velocity = this.particleSystem.random(1, 2);
         return Puddle.builder()
                 .puddleManager(this)
                 .x(x)
@@ -78,5 +72,22 @@ public class PuddleManager {
                 .maxIntensity(puddle.getMaxIntensity())
                 .velocity(newVelocity > 1 ? newVelocity : 1)
                 .build();
+    }
+
+    public void updatePuddle(final Puddle puddle) {
+        puddle.update();
+    }
+
+    public void remove(final Puddle puddle) {
+        puddles.remove(puddle);
+    }
+
+    public boolean positionExists(final Puddle initialPuddle) {
+        for (Puddle puddle : this.puddles) {
+            if (puddle.getX() == initialPuddle.getX() && puddle.getY() == initialPuddle.getY()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
