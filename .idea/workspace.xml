@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="make fish agents">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2aAVe4UviLXt2O6O5cdSjAUPOYd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GrowFormSpin.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloWorld.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ImagePixelation.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (2).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (3).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (4).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (5).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.SpaceInvaders.executor&quot;: &quot;Run&quot;,
+    &quot;Application.VeryFractal.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.creative_coding [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.creative_coding [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.ex_7.1 [install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-17&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Oliver/IdeaProjects/creative_coding/ex_6.1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\own_0_test_stuff\src\main\java" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\ex_7.1\src\main\java" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\ex_8.1\src\main\resources" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\ex_6.2\src\main\resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\ex_7.1\src\main\resources" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\ex_3.3\src\main\resources" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\ex_2.1\src\main\java" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\ex_1.1\src\main\java" />
+      <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\exercises" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+      <recent name="app" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Main (3)">
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ex_6.1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ex_8.1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ex_6.1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main (5)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ex_5.3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ex_7.1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main (3)" />
+        <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.Main (5)" />
+        <item itemvalue="Application.Main (4)" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-f644763e9732-ebaef533" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="" />
+      <created>1703761466993</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1703761466993</updated>
+      <workItem from="1703761468456" duration="3559000" />
+      <workItem from="1703765082588" duration="291000" />
+      <workItem from="1703765496675" duration="10002000" />
+      <workItem from="1703811967567" duration="482000" />
+      <workItem from="1703863578443" duration="9521000" />
+      <workItem from="1703874492339" duration="8557000" />
+      <workItem from="1704030274448" duration="3010000" />
+      <workItem from="1704036416247" duration="118000" />
+      <workItem from="1704036581739" duration="93000" />
+      <workItem from="1704036682185" duration="31000" />
+      <workItem from="1704036721411" duration="23991000" />
+      <workItem from="1704110256482" duration="9624000" />
+      <workItem from="1704210595754" duration="5247000" />
+      <workItem from="1704371587373" duration="9445000" />
+      <workItem from="1704381240079" duration="17204000" />
+      <workItem from="1704400580023" duration="2090000" />
+      <workItem from="1704403622785" duration="20553000" />
+      <workItem from="1704447363896" duration="111000" />
+      <workItem from="1704456400889" duration="9632000" />
+      <workItem from="1704535737084" duration="19000" />
+      <workItem from="1704883251555" duration="7106000" />
+      <workItem from="1704890709536" duration="13239000" />
+      <workItem from="1704927998059" duration="82000" />
+      <workItem from="1704968871013" duration="5000" />
+      <workItem from="1705055633046" duration="5990000" />
+      <workItem from="1705063906201" duration="9623000" />
+      <workItem from="1705073803569" duration="2059000" />
+      <workItem from="1705075872565" duration="605000" />
+    </task>
+    <task id="LOCAL-00001" summary="something I did before">
+      <option name="closed" value="true" />
+      <created>1703873575411</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1703873575411</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Back to java 17">
+      <option name="closed" value="true" />
+      <created>1703882850718</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1703882850718</updated>
+    </task>
+    <task id="LOCAL-00003" summary="gears quick save">
+      <option name="closed" value="true" />
+      <created>1703882865447</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1703882865447</updated>
+    </task>
+    <task id="LOCAL-00004" summary="gears quick save">
+      <option name="closed" value="true" />
+      <created>1704040591709</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1704040591709</updated>
+    </task>
+    <task id="LOCAL-00005" summary="gears draw function">
+      <option name="closed" value="true" />
+      <created>1704040616280</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1704040616280</updated>
+    </task>
+    <task id="LOCAL-00006" summary="temp">
+      <option name="closed" value="true" />
+      <created>1704053274211</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1704053274212</updated>
+    </task>
+    <task id="LOCAL-00007" summary="change to createShape">
+      <option name="closed" value="true" />
+      <created>1704058115489</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1704058115489</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Create the cogwheel shape">
+      <option name="closed" value="true" />
+      <created>1704063035642</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1704063035642</updated>
+    </task>
+    <task id="LOCAL-00009" summary="implement gear creation">
+      <option name="closed" value="true" />
+      <created>1704213146861</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1704213146861</updated>
+    </task>
+    <task id="LOCAL-00010" summary="todo">
+      <option name="closed" value="true" />
+      <created>1704216990585</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1704216990585</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Kinda finished but kinda not">
+      <option name="closed" value="true" />
+      <created>1704402666613</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1704402666613</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Some changes">
+      <option name="closed" value="true" />
+      <created>1704427007461</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1704427007461</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add link">
+      <option name="closed" value="true" />
+      <created>1704427363558</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1704427363558</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add background and chicken">
+      <option name="closed" value="true" />
+      <created>1704468409598</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1704468409598</updated>
+    </task>
+    <task id="LOCAL-00015" summary="optimize imports">
+      <option name="closed" value="true" />
+      <created>1704468426780</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1704468426780</updated>
+    </task>
+    <task id="LOCAL-00016" summary="reformat">
+      <option name="closed" value="true" />
+      <created>1704468450816</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1704468450816</updated>
+    </task>
+    <task id="LOCAL-00017" summary="overengineered with size">
+      <option name="closed" value="true" />
+      <created>1704891608717</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1704891608717</updated>
+    </task>
+    <task id="LOCAL-00018" summary="remove size and move 7.1 to 7.2 . . .">
+      <option name="closed" value="true" />
+      <created>1704901577162</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1704901577162</updated>
+    </task>
+    <task id="LOCAL-00019" summary="template for waves (ocean)">
+      <option name="closed" value="true" />
+      <created>1704928068320</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1704928068320</updated>
+    </task>
+    <task id="LOCAL-00020" summary="fix puddles">
+      <option name="closed" value="true" />
+      <created>1705058628376</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1705058628376</updated>
+    </task>
+    <task id="LOCAL-00021" summary="add intensity">
+      <option name="closed" value="true" />
+      <created>1705058935204</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1705058935204</updated>
+    </task>
+    <task id="LOCAL-00022" summary="make puddles persistent">
+      <option name="closed" value="true" />
+      <created>1705060785155</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1705060785155</updated>
+    </task>
+    <task id="LOCAL-00023" summary="make fish agents">
+      <option name="closed" value="true" />
+      <created>1705075849483</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1705075849483</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="something I did before" />
+    <MESSAGE value="Back to java 17" />
+    <MESSAGE value="gears quick save" />
+    <MESSAGE value="gears draw function" />
+    <MESSAGE value="temp" />
+    <MESSAGE value="change to createShape" />
+    <MESSAGE value="Create the cogwheel shape" />
+    <MESSAGE value="implement gear creation" />
+    <MESSAGE value="todo" />
+    <MESSAGE value="Kinda finished but kinda not" />
+    <MESSAGE value="Some changes" />
+    <MESSAGE value="add link" />
+    <MESSAGE value="add background and chicken" />
+    <MESSAGE value="optimize imports" />
+    <MESSAGE value="reformat" />
+    <MESSAGE value="overengineered with size" />
+    <MESSAGE value="remove size and move 7.1 to 7.2 . . ." />
+    <MESSAGE value="template for waves (ocean)" />
+    <MESSAGE value="fix puddles" />
+    <MESSAGE value="add intensity" />
+    <MESSAGE value="make puddles persistent" />
+    <MESSAGE value="make fish agents" />
+    <option name="LAST_COMMIT_MESSAGE" value="make fish agents" />
+  </component>
+</project>
