@@ -1,12 +1,9 @@
 package app;
 
-import app.obj.ExplosionFluid;
-import app.obj.Fluid;
 import app.obj.PuddleFluid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
-import processing.core.PImage;
 import processing.event.MouseEvent;
 
 import java.util.ArrayList;
@@ -37,46 +34,40 @@ public class FluidParticleSystem extends PApplet {
     public void setup() {
         frameRate(60);
         colorMode(RGB);
-        noStroke();
     }
 
     @Override
     public void draw() {
         background(20, 30, 140, 140);
 
-        final List<Fluid> rf = new ArrayList<>();
-        final List<Fluid> toAdd = new ArrayList<>();
+        final List<PuddleFluid> rf = new ArrayList<>();
+        final List<PuddleFluid> toAdd = new ArrayList<>();
 
-        if(frameCount % 60 == 0) {
+        if(frameCount % 180 == 0) {
+            LOG.info("Size: {}", fluidManager.getPuddles().size());
             fluidManager.spawnRandomPuddle(this);
         }
 
+        for (PuddleFluid puddle : fluidManager.getPuddles()) {
+            if (puddle.isActive()) {
+                puddle.update();
+                drawPuddle(puddle);
 
-        for (Fluid f : fluidManager.getFluids()) {
-            if (f.isActive()) {
-                f.update();
-                drawFluid(f);
-
-                if (f instanceof PuddleFluid puddle && puddle.shouldRippleNow()) {
-                    toAdd.add(new PuddleFluid(this.fluidManager, puddle.getX(), puddle.getY(), puddle.getInitialLifeSpan(), puddle.getInitialRadius() / 2));
+                if (puddle.shouldRipple()) {
+                    toAdd.add(new PuddleFluid(this.fluidManager, puddle.getX(), puddle.getY(), puddle.getInitialLifeSpan() / 2, puddle.getInitialRadius() / 2));
                 }
             } else {
-                rf.add(f);
+                rf.add(puddle);
             }
         }
 
-        rf.forEach(fluidManager.getFluids()::remove);
+        rf.forEach(fluidManager.getPuddles()::remove);
         toAdd.forEach(fluidManager::addToList);
     }
 
-    void drawFluid(final Fluid f) {
-        if (f instanceof ExplosionFluid fluid) {
-            fill(255, 0, 0);
-//            ellipse(fluid.getX(), fluid.getY(), fluid.get(), fluid.getRadius());
-        } else if (f instanceof PuddleFluid fluid) {
-            fill(0, 0, 255, fluid.getLifeSpan());
-            ellipseMode(RADIUS);
-            ellipse(fluid.getX(), fluid.getY(), fluid.getRadius(), fluid.getRadius());
-        }
+    void drawPuddle(final PuddleFluid puddle) {
+        noFill();
+        stroke(0, 200, 250, puddle.getLifeSpan());
+        ellipse(puddle.getX(), puddle.getY(), puddle.getRadius(), puddle.getRadius());
     }
 }
