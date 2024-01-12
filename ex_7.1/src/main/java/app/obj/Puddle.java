@@ -1,6 +1,6 @@
 package app.obj;
 
-import app.FluidManager;
+import app.PuddleManager;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,13 +12,14 @@ import static processing.core.PApplet.map;
 @Setter
 @Builder
 @AllArgsConstructor
-public class PuddleFluid {
-    private final FluidManager fluidManager;
+public class Puddle {
+    private final PuddleManager puddleManager;
     private final float x, y;
     private final int initialLifeSpan;
     private final float initialRadius;
-    private final float minIntesity;
-    private final float maxIntesity;
+    private final float minIntensity;
+    private final float maxIntensity;
+    private final float velocity;
 
     private float radius;
     private float intensity;
@@ -26,7 +27,7 @@ public class PuddleFluid {
 
     public void update() {
         this.lifeSpan--;
-        this.radius++;
+        this.radius += this.velocity;
     }
 
     public boolean isActive() {
@@ -38,6 +39,9 @@ public class PuddleFluid {
     }
 
     public boolean shouldRipple() {
-        return (this.lifeSpan == (3 * this.initialLifeSpan / 4) && this.initialRadius >= 5);
+        return (
+                this.lifeSpan == (2 * this.initialLifeSpan / 5) &&
+                this.initialRadius >= 5f
+        );
     }
 }

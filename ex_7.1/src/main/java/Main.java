@@ -1,7 +1,7 @@
-import app.FluidParticleSystem;
+import app.PuddleSystem;
 
 public class Main {
     public static void main(String[] args) {
-        FluidParticleSystem.main(FluidParticleSystem.class);
+        PuddleSystem.main(PuddleSystem.class);
     }
 }
