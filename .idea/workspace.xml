@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="update gitignore">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="reformat all">
+      <change afterPath="$PROJECT_DIR$/own_0_test_stuff/src/main/java/FIsh.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_8.1/src/main/java/app/Fish.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_8.1/src/main/java/app/Fish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_8.1/src/main/java/app/FishAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_8.1/src/main/java/app/FishAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/own_0_test_stuff/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/own_0_test_stuff/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/own_0_test_stuff/src/main/java/Ignore.java" beforeDir="false" afterPath="$PROJECT_DIR$/own_0_test_stuff/src/main/java/Ignore.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,6 +103,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Main (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="own_0_test_stuff" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ex_8.1" />
@@ -120,20 +131,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ex_7.1" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main (3)" />
+        <item itemvalue="Application.Main (2)" />
         <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.Main (5)" />
         <item itemvalue="Application.Main (4)" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -180,7 +184,7 @@
       <workItem from="1705063906201" duration="9623000" />
       <workItem from="1705073803569" duration="2059000" />
       <workItem from="1705075872565" duration="605000" />
-      <workItem from="1705077084508" duration="110000" />
+      <workItem from="1705077084508" duration="6892000" />
     </task>
     <task id="LOCAL-00001" summary="something I did before">
       <option name="closed" value="true" />
@@ -382,7 +386,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705077154537</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="reformat all">
+      <option name="closed" value="true" />
+      <created>1705077234433</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1705077234433</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -424,6 +436,7 @@
     <MESSAGE value="make fish agents" />
     <MESSAGE value="." />
     <MESSAGE value="update gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="update gitignore" />
+    <MESSAGE value="reformat all" />
+    <option name="LAST_COMMIT_MESSAGE" value="reformat all" />
   </component>
 </project>

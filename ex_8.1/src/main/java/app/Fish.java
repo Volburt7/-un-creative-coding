@@ -26,9 +26,12 @@ public class Fish {
     private final PVector velocity;
     private final PVector acceleration;
     private final float width;
-    private final float height;
+    private final float length;
     private final float maxForce;
     private final float maxSpeed;
+
+    private float finRotation = 0;
+    private boolean finDirection = false;
 
     public void run() {
         this.flock();
@@ -56,6 +59,21 @@ public class Fish {
         velocity.limit(this.maxSpeed);
         position.add(velocity);
         acceleration.mult(0);
+        moveFin();
+    }
+
+    public void moveFin() {
+        if (this.finRotation >= 20) {
+            this.finDirection = true;
+        } else if (this.finRotation <= -20) {
+            this.finDirection = false;
+        }
+
+        if (this.finDirection) {
+            this.finRotation -= 1;
+        } else {
+            this.finRotation += 1;
+        }
     }
 
     private PVector seek(final PVector target) {
@@ -73,31 +91,26 @@ public class Fish {
         this.fishAgent.pushMatrix();
         this.fishAgent.translate(position.x, position.y);
         this.fishAgent.rotate(theta);
-        this.fishAgent.shape(getFishShape());
+        this.fishAgent.pushMatrix();
+        this.fishAgent.translate(this.length / 2, 0);
+        this.fishAgent.rotate(radians(this.finRotation));
+        this.fishAgent.shape(this.getFin());
         this.fishAgent.popMatrix();
-    }
-
-    private PShape getFishShape() {
-        final PShape body = getBody();
-        final PShape fin = getFin();
-
-        final PShape fishShape = this.fishAgent.createShape(GROUP);
-        fishShape.fill(0, 40, 35);
-        fishShape.addChild(body);
-        fishShape.addChild(fin);
-        return fishShape;
+        this.fishAgent.shape(this.getBody());
+        this.fishAgent.popMatrix();
     }
 
     private PShape getBody() {
         final PShape body = this.fishAgent.createShape();
         body.beginShape();
+        body.fill(0, 30, 35);
         for (float rad = 0.0f; rad <= PI; rad += PI / 100) {
-            float xPos = rad / TWO_PI * this.height;
+            float xPos = rad / TWO_PI * this.length;
             float yPos = this.width * sin(rad);
             body.vertex(xPos, yPos);
         }
         for (float rad = PI; rad >= 0.0f; rad -= PI / 100) {
-            float xPos = rad / TWO_PI * this.height;
+            float xPos = rad / TWO_PI * this.length;
             float yPos = this.width * (-sin(rad));
             body.vertex(xPos, yPos);
         }
@@ -107,18 +120,22 @@ public class Fish {
 
     private PShape getFin() {
         final PShape fin = this.fishAgent.createShape();
+        this.fishAgent.pushMatrix();
+        this.fishAgent.rotate(radians(this.finRotation));
         fin.beginShape();
+        fin.fill(0, 30, 35);
         for (float rad = PI; rad <= PI + QUARTER_PI; rad += (PI + QUARTER_PI) / 50) {
-            float xPos = rad / TWO_PI * this.height - PI / 8;
-            float yPos = this.width * sin(rad + PI / 8);
+            float xPos = rad / TWO_PI * this.length - this.length / 2;
+            float yPos = this.width * sin(rad);
             fin.vertex(xPos, yPos);
         }
         for (float rad = PI + QUARTER_PI; rad >= PI; rad -= (PI + QUARTER_PI) / 50) {
-            float xPos = rad / TWO_PI * this.height - PI / 8;
-            float yPos = this.width * (-sin(rad + PI / 8));
+            float xPos = rad / TWO_PI * this.length - this.length / 2;
+            float yPos = this.width * (-sin(rad));
             fin.vertex(xPos, yPos);
         }
         fin.endShape();
+        this.fishAgent.popMatrix();
         return fin;
     }
 
@@ -127,14 +144,14 @@ public class Fish {
         if (this.position.x < -this.width) {
             this.position.x = this.fishAgent.width + this.width;
         }
-        if (this.position.y < -this.height) {
-            this.position.y = this.fishAgent.height + this.height;
+        if (this.position.y < -this.length) {
+            this.position.y = this.fishAgent.height + this.length;
         }
         if (this.position.x > this.fishAgent.width + this.width) {
             this.position.x = -this.width;
         }
-        if (this.position.y > this.fishAgent.height + this.height) {
-            this.position.y = -this.height;
+        if (this.position.y > this.fishAgent.height + this.length) {
+            this.position.y = -this.length;
         }
     }
 

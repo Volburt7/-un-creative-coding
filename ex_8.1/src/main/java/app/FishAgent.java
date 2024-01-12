@@ -23,7 +23,7 @@ public class FishAgent extends PApplet {
     public void setup() {
         frameRate(60);
         colorMode(RGB);
-        for (int i = 0; i <= 30; i++) {
+        for (int i = 0; i < 100; i++) {
             final float initialAngle = random(TWO_PI);
             fishList.add(Fish.builder()
                     .fishAgent(this)
@@ -31,10 +31,10 @@ public class FishAgent extends PApplet {
                     .position(new PVector(random(0, width), random(0, height)))
                     .acceleration(PVector.random2D())
                     .velocity(new PVector(cos(initialAngle), sin(initialAngle)))
-                    .width(random(10, 15))
-                    .height(random(40, 200))
-                    .maxForce(random(0.02f, 0.05f))
-                    .maxSpeed(random(1, 4))
+                    .width(random(5, 18))
+                    .length(random(10, 180))
+                    .maxForce(random(0.02f, 0.04f))
+                    .maxSpeed(random(1, 3))
                     .build());
         }
     }
