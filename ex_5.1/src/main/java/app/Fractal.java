@@ -4,6 +4,10 @@ import processing.core.PApplet;
 
 public class Fractal extends PApplet {
 
+    /*
+    * I copied this from the repo
+    * */
+
     @Override
     public void settings() {
         size(1024, 1024);

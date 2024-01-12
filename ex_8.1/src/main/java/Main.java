@@ -1,7 +1,7 @@
-import app.AgendSpaghettiCode;
+import app.FishAgent;
 
 public class Main {
     public static void main(String[] args) {
-        AgendSpaghettiCode.main(AgendSpaghettiCode.class);
+        FishAgent.main(FishAgent.class);
     }
 }

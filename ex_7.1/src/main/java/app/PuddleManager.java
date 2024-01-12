@@ -1,6 +1,7 @@
 package app;
 
 import app.obj.Puddle;
+import processing.core.PApplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,10 @@ import static processing.core.PApplet.map;
 
 public class PuddleManager {
     private final static float MIN_STROKE_WEIGHT = 0.5f;
-    private final PuddleSystem particleSystem;
+    private final PApplet particleSystem;
     private final List<Puddle> puddles;
 
-    public PuddleManager(final PuddleSystem particleSystem) {
+    public PuddleManager(final PApplet particleSystem) {
         this.particleSystem = particleSystem;
         this.puddles = new ArrayList<>();
     }

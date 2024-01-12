@@ -1,7 +1,7 @@
-import app.NotMine;
+import app.GearSimulation;
 
 public class Main {
     public static void main(String[] args) {
-        NotMine.main(NotMine.class);
+        GearSimulation.main(GearSimulation.class);
     }
 }
