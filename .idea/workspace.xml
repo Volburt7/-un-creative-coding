@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="make fin move">
+    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="fix ball collision">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex_5.3/src/main/java/app/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_5.3/src/main/java/app/Ball.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex_5.3/src/main/java/app/BouncingBalls.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_5.3/src/main/java/app/BouncingBalls.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/resources/temp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_1.1/src/main/java/app/HelloWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_1.1/src/main/java/app/HelloWorld.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +91,7 @@
       <recent name="app" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main (5)">
+  <component name="RunManager" selected="Application.Main (4)">
     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ex_6.1" />
@@ -101,16 +99,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="own_0_test_stuff" />
+      <module name="ex_8.1" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ex_8.1" />
+      <module name="ex_1.1" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -131,11 +129,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main (4)" />
         <item itemvalue="Application.Main (5)" />
         <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (3)" />
-        <item itemvalue="Application.Main (2)" />
       </list>
     </recent_temporary>
   </component>
@@ -183,7 +181,7 @@
       <workItem from="1705073803569" duration="2059000" />
       <workItem from="1705075872565" duration="605000" />
       <workItem from="1705077084508" duration="7069000" />
-      <workItem from="1705325069608" duration="2046000" />
+      <workItem from="1705325069608" duration="2480000" />
     </task>
     <task id="LOCAL-00001" summary="something I did before">
       <option name="closed" value="true" />
@@ -401,7 +399,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705101949769</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="fix ball collision">
+      <option name="closed" value="true" />
+      <created>1705327225046</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1705327225046</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -419,7 +425,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Back to java 17" />
     <MESSAGE value="gears quick save" />
     <MESSAGE value="gears draw function" />
     <MESSAGE value="temp" />
@@ -444,7 +449,8 @@
     <MESSAGE value="update gitignore" />
     <MESSAGE value="reformat all" />
     <MESSAGE value="make fin move" />
-    <option name="LAST_COMMIT_MESSAGE" value="make fin move" />
+    <MESSAGE value="fix ball collision" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix ball collision" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
