@@ -12,6 +12,7 @@ import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GearSimulation extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
@@ -97,70 +98,47 @@ public class GearSimulation extends PApplet {
         gearInCreation.setToNextStage();
         if (GearCreationState.CREATED.equals(gearInCreation.getGearCreationState())) {
             gears.add(gearInCreation);
-            updateGearList();
             gearInCreation = null;
+            updateGearList();
         }
     }
 
     void updateGearList() {
-        final List<Gear> updatedGears = new ArrayList<>();
-        final List<List<Gear>> initialMotorChain = getInitialMotorChains();
-
-        for (List<Gear> gearChain : initialMotorChain) {
-            final Gear motor = gearChain.get(0);
-            gearChain.remove(motor);
-            updatedGears.add(motor);
-            if (!gearChain.isEmpty()) {
-                translateGearRotation(motor, gearChain, updatedGears);
-            }
-        }
-    }
-
-    private List<List<Gear>> getInitialMotorChains() {
-        final List<List<Gear>> gearChains = new ArrayList<>();
-        gears.forEach(gear -> {
-            if (gear.isMotor()) {
-                final List<Gear> gearChain = new ArrayList<>();
-                gearChain.add(gear);
-                gearChain.addAll(getSurroundingGears(gear));
-                gearChains.add(gearChain);
-            }
-        });
-        return gearChains;
-    }
-
-    private List<Gear> getSurroundingGears(final Gear gear) {
-        final List<Gear> gearChain = new ArrayList<>();
-        gears.forEach(g -> {
-            if (!g.equals(gear) && isConnected(gear, g)) {
-                gearChain.add(g);
-            }
-        });
-        return gearChain;
-    }
-
-    private void translateGearRotation(final Gear motor, final List<Gear> rotateCandidates, final List<Gear> updatedGears) {
-        rotateCandidates.stream().filter(gear -> !updatedGears.contains(gear)).forEach(gear -> {
-            updatedGears.add(gear);
-            final float translationRatio = (float) motor.getToothCount() / (float) gear.getToothCount();
-            gear.setRpm(motor.getRpm() * translationRatio);
-            gear.setDirection(Direction.LEFT.equals(motor.getDirection()) ? Direction.RIGHT : Direction.LEFT);
-            gear.setRadiansOffset(calculateNewOffset(gear, motor));
-            translateGearRotation(gear, getSurroundingGears(gear), updatedGears);
-        });
+        final List<Gear> motors = getMotors();
+        final List<Gear> updatedEntries = new ArrayList<>(motors); // antiLoopList
+        motors.forEach(motor -> translateGearRotation(motor, updatedEntries));
         imageFlag = true;
     }
 
-    private float calculateNewOffset(final Gear gear, final Gear motor) {
-        final float translationRatio = (float) motor.getToothCount() / (float) gear.getToothCount();
-        final float newOffset = motor.getRadiansOffset() * translationRatio - (TWO_PI / gear.getToothCount() / 2);
-        return newOffset % TWO_PI;
+    private List<Gear> getMotors() {
+        return gears.stream().filter(Gear::isMotor).toList();
     }
 
-    private boolean isConnected(final Gear gear1, final Gear gear2) {
-        final float dist = dist(gear1.getPositionX(), gear1.getPositionY(), gear2.getPositionX(), gear2.getPositionY());
-        final float radiusSum = gear1.getRadius() + gear2.getRadius() + 2 * Gear.TOOTH_SIZE;
-        return dist < radiusSum;
+    private void translateGearRotation(final Gear motor, final List<Gear> updatedEntries) {
+        final List<Gear> connectedGears = getConnectedGears(motor);
+        connectedGears.forEach(gear -> {
+            if (!gear.isMotor() && !updatedEntries.contains(gear)) {
+                applyTranslation(motor, gear);
+                updatedEntries.add(gear);
+                translateGearRotation(gear, updatedEntries);
+            }
+        });
+    }
+
+    private List<Gear> getConnectedGears(final Gear motor) {
+        return gears.stream()
+                .filter(gear -> !gear.isMotor())
+                .filter(gear -> Gear.isConnected(motor, gear))
+                .collect(Collectors.toList());
+    }
+
+    private void applyTranslation(final Gear motor, final Gear gear) {
+        final float translationRatio = (float) motor.getToothCount() / (float) gear.getToothCount();
+        gear.setRpm(motor.getRpm() * translationRatio);
+        gear.setDirection(Direction.LEFT.equals(motor.getDirection()) ? Direction.RIGHT : Direction.LEFT);
+
+        final float newOffset = motor.getRadiansOffset() * translationRatio - (TWO_PI / motor.getToothCount() / 2);
+        gear.setRadiansOffset(newOffset);
     }
 
     @Override
@@ -244,7 +222,7 @@ public class GearSimulation extends PApplet {
     private void drawTeeth(final Gear gear, final PShape gearShape) {
         // Logic from https://math.stackexchange.com/questions/225351/equation-of-sine
         final float deltaSinDots = TWO_PI / (gear.getToothCount() * Gear.TOOTH_SIZE);
-        for (float rad = 0; rad < TWO_PI; rad += deltaSinDots) {
+        for (float rad = 0; rad <= TWO_PI; rad += deltaSinDots) {
             float xPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * cos(rad);
             float yPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * sin(rad);
             gearShape.vertex(xPos, yPos);

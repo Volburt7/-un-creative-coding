@@ -90,4 +90,11 @@ public class Gear {
         this.toothCount = calculateToothCount(radius);
         this.radius = this.toothCount * TOOTH_SIZE / PI;
     }
+
+    public static boolean isConnected(final Gear gear1, final Gear gear2) {
+        final float dist = dist(gear1.getPositionX(), gear1.getPositionY(), gear2.getPositionX(), gear2.getPositionY());
+        final float radiusSum = gear1.getRadius() + gear2.getRadius() + 2 * Gear.TOOTH_SIZE;
+        return dist < radiusSum;
+    }
+
 }
