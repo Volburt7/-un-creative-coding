@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="make hello world faster">
+    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="add comment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex_3.1.1/src/main/java/app/MisusedRotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_3.1.1/src/main/java/app/MisusedRotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/DynamicGearHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_6.1/src/main/java/app/DynamicGearHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/GearSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_6.1/src/main/java/app/GearSimulation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,11 +39,11 @@
     "Application.GrowFormSpin.executor": "Run",
     "Application.HelloWorld.executor": "Run",
     "Application.ImagePixelation.executor": "Run",
-    "Application.Main (1).executor": "Run",
+    "Application.Main (1).executor": "Debug",
     "Application.Main (2).executor": "Run",
     "Application.Main (3).executor": "Run",
     "Application.Main (4).executor": "Run",
-    "Application.Main (5).executor": "Debug",
+    "Application.Main (5).executor": "Run",
     "Application.Main.executor": "Run",
     "Application.SpaceInvaders.executor": "Run",
     "Application.VeryFractal.executor": "Run",
@@ -181,7 +182,7 @@
       <workItem from="1705073803569" duration="2059000" />
       <workItem from="1705075872565" duration="605000" />
       <workItem from="1705077084508" duration="7069000" />
-      <workItem from="1705325069608" duration="3206000" />
+      <workItem from="1705325069608" duration="7772000" />
     </task>
     <task id="LOCAL-00001" summary="something I did before">
       <option name="closed" value="true" />
@@ -415,7 +416,23 @@
       <option name="project" value="LOCAL" />
       <updated>1705327611759</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="change color of misused rotation">
+      <option name="closed" value="true" />
+      <created>1705328330534</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1705328330534</updated>
+    </task>
+    <task id="LOCAL-00031" summary="add comment">
+      <option name="closed" value="true" />
+      <created>1705328569668</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1705328569668</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -433,8 +450,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="gears draw function" />
-    <MESSAGE value="temp" />
     <MESSAGE value="change to createShape" />
     <MESSAGE value="Create the cogwheel shape" />
     <MESSAGE value="implement gear creation" />
@@ -458,7 +473,9 @@
     <MESSAGE value="make fin move" />
     <MESSAGE value="fix ball collision" />
     <MESSAGE value="make hello world faster" />
-    <option name="LAST_COMMIT_MESSAGE" value="make hello world faster" />
+    <MESSAGE value="change color of misused rotation" />
+    <MESSAGE value="add comment" />
+    <option name="LAST_COMMIT_MESSAGE" value="add comment" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

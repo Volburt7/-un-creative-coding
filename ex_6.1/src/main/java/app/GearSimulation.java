@@ -156,7 +156,6 @@ public class GearSimulation extends PApplet {
     private float calculateNewOffset(final Gear gear, final Gear motor) {
         final float translationRatio = (float) motor.getToothCount() / (float) gear.getToothCount();
         final float newOffset = motor.getRadiansOffset() * translationRatio - (TWO_PI / gear.getToothCount() / 2);
-        LOG.info("Going from {} to {}. Motor offset was {} and gear offset {} -> {}", motor.getToothCount(), gear.getToothCount(), motor.getRadiansOffset(), gear.getRadiansOffset(), newOffset);
         return newOffset % TWO_PI;
     }
 
@@ -242,7 +241,7 @@ public class GearSimulation extends PApplet {
     private void drawTeeth(final Gear gear, final PShape gearShape) {
         // Logic from https://math.stackexchange.com/questions/225351/equation-of-sine
         final float deltaSinDots = TWO_PI / (gear.getToothCount() * Gear.TOOTH_SIZE);
-        for (float rad = 0.0f; rad < TWO_PI; rad += deltaSinDots) {
+        for (float rad = 0; rad < TWO_PI; rad += deltaSinDots) {
             float xPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * cos(rad);
             float yPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * sin(rad);
             gearShape.vertex(xPos, yPos);
@@ -250,9 +249,10 @@ public class GearSimulation extends PApplet {
     }
 
     private void removeInnerCircle(final Gear gear, final PShape gearShape) {
-        for (float rad = TWO_PI; rad >= 0; rad -= TWO_PI / 60) {
-            float xPos = cos(rad) * gear.getRadius() / 2;
-            float yPos = sin(rad) * gear.getRadius() / 2;
+        final float deltaSinDots = TWO_PI / (gear.getToothCount() * Gear.TOOTH_SIZE);
+        for (float rad = TWO_PI - deltaSinDots; rad >= 0; rad -= deltaSinDots) {
+            float xPos = (gear.getRadius() / 2f) * cos(rad);
+            float yPos = (gear.getRadius() / 2f) * sin(rad);
             gearShape.vertex(xPos, yPos);
         }
     }

@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import static processing.core.PApplet.dist;
 
+@Getter
 public class DynamicGearHolder {
     private final static Logger LOG = LoggerFactory.getLogger(DynamicGearHolder.class);
 
-    @Getter
     private Gear gear;
 
     public void initializeDynamicGear(final int xPosition, final int yPosition) {
