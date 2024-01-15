@@ -15,11 +15,11 @@ import java.util.List;
 
 public class GearSimulation extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
-    final List<Gear> gears = new ArrayList<>();
-    final DynamicGearHolder dynamicGearHolder = new DynamicGearHolder();
     private final boolean HIDDEN_MODE = false;
-    boolean creationInProgress = false;
+    private final List<Gear> gears = new ArrayList<>();
 
+    private Gear gearInCreation = null;
+    private boolean imageFlag = false;
 
     @Override
     public void settings() {
@@ -28,27 +28,29 @@ public class GearSimulation extends PApplet {
 
     @Override
     public void mousePressed(final MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == LEFT && !creationInProgress) {
-            dynamicGearHolder.initializeDynamicGear(mouseEvent.getX(), mouseEvent.getY());
-            creationInProgress = true;
+        if (mouseEvent.getButton() == LEFT && gearInCreation == null) {
+            gearInCreation = Gear.builder()
+                    .positionX(mouseEvent.getX())
+                    .positionY(mouseEvent.getY())
+                    .gearCreationState(GearCreationState.SIZE)
+                    .build();
         }
     }
 
     @Override
     public void mouseDragged(final MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == LEFT && creationInProgress) {
-            if (GearCreationState.SIZE.equals(dynamicGearHolder.getGear().getGearCreationState())) {
-                dynamicGearHolder.updateRadius(mouseEvent.getX(), mouseEvent.getY());
+        if (mouseEvent.getButton() == LEFT && gearInCreation != null) {
+            if (GearCreationState.SIZE.equals(gearInCreation.getGearCreationState())) {
+                gearInCreation.updateRadius(mouseEvent.getX(), mouseEvent.getY());
             } else {
-                dynamicGearHolder.updateLocation(mouseEvent.getX(), mouseEvent.getY());
+                gearInCreation.updateLocation(mouseEvent.getX(), mouseEvent.getY());
             }
         }
     }
 
     @Override
     public void mouseReleased(final MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == LEFT && creationInProgress) {
-            final Gear gearInCreation = dynamicGearHolder.getGear();
+        if (mouseEvent.getButton() == LEFT && gearInCreation != null) {
             if (gearInCreation.getToothCount() >= 2 && GearCreationState.SIZE.equals(gearInCreation.getGearCreationState())) {
                 continueGearCreation();
             }
@@ -57,36 +59,33 @@ public class GearSimulation extends PApplet {
 
     @Override
     public void mouseWheel(final MouseEvent mouseEvent) {
-        if (creationInProgress) {
-            final Gear gearInCreation = dynamicGearHolder.getGear();
-            if (gearInCreation != null) {
-                switch (gearInCreation.getGearCreationState()) {
-                    case TYPE -> dynamicGearHolder.updateType();
-                    case DIRECTION -> dynamicGearHolder.updateDirection();
-                    case SPEED -> dynamicGearHolder.updateSpeed(mouseEvent.getCount());
-                }
+        if (gearInCreation != null) {
+            switch (gearInCreation.getGearCreationState()) {
+                case TYPE -> gearInCreation.updateType();
+                case DIRECTION -> gearInCreation.updateDirection();
+                case SPEED -> gearInCreation.updateSpeed(mouseEvent.getCount());
             }
         }
     }
 
     @Override
     public void mouseClicked(final MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == LEFT && creationInProgress) {
-            if (!GearCreationState.SIZE.equals(dynamicGearHolder.getGear().getGearCreationState())) {
+        if (mouseEvent.getButton() == LEFT && gearInCreation != null) {
+            if (!GearCreationState.SIZE.equals(gearInCreation.getGearCreationState())) {
                 continueGearCreation();
             }
         }
-        if (mouseEvent.getButton() == RIGHT && creationInProgress) {
-            creationInProgress = false;
+        if (mouseEvent.getButton() == RIGHT && gearInCreation != null) {
+            gearInCreation = null; // TODO: check this
         }
     }
 
     @Override
     public void keyPressed(final KeyEvent keyEvent) {
         LOG.debug("Pressed keycode {}", keyEvent.getKeyCode());
-        if (creationInProgress) {
+        if (gearInCreation != null) {
             switch (keyEvent.getKeyCode()) {
-                case BACKSPACE -> creationInProgress = false;
+                case BACKSPACE -> gearInCreation = null;
                 case ENTER, 32 -> continueGearCreation();
             }
         } else if (keyEvent.getKeyCode() == 116) { // F5 = Reload
@@ -95,13 +94,11 @@ public class GearSimulation extends PApplet {
     }
 
     private void continueGearCreation() {
-        dynamicGearHolder.setToNextStage();
-
-        final Gear gearInCreation = dynamicGearHolder.getGear();
+        gearInCreation.setToNextStage();
         if (GearCreationState.CREATED.equals(gearInCreation.getGearCreationState())) {
-            creationInProgress = false;
             gears.add(gearInCreation);
             updateGearList();
+            gearInCreation = null;
         }
     }
 
@@ -151,6 +148,7 @@ public class GearSimulation extends PApplet {
             gear.setRadiansOffset(calculateNewOffset(gear, motor));
             translateGearRotation(gear, getSurroundingGears(gear), updatedGears);
         });
+        imageFlag = true;
     }
 
     private float calculateNewOffset(final Gear gear, final Gear motor) {
@@ -178,8 +176,13 @@ public class GearSimulation extends PApplet {
         noStroke();
         gears.forEach(this::drawGear);
 
-        if (creationInProgress) {
-            drawGear(dynamicGearHolder.getGear());
+        if (gearInCreation != null) {
+            drawGear(gearInCreation);
+        }
+
+        if (imageFlag) {
+            saveFrame("./img/aahg_" + gears.size() + ".png");
+            imageFlag = false;
         }
     }
 

@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="add comment">
+    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="minor change">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/DynamicGearHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_6.1/src/main/java/app/DynamicGearHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/DynamicGearHolder.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/GearSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_6.1/src/main/java/app/GearSimulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/objects/Gear.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_6.1/src/main/java/app/objects/Gear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/objects/builders/GearBuilder.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +41,7 @@
     "Application.GrowFormSpin.executor": "Run",
     "Application.HelloWorld.executor": "Run",
     "Application.ImagePixelation.executor": "Run",
-    "Application.Main (1).executor": "Debug",
+    "Application.Main (1).executor": "Run",
     "Application.Main (2).executor": "Run",
     "Application.Main (3).executor": "Run",
     "Application.Main (4).executor": "Run",
@@ -182,7 +184,7 @@
       <workItem from="1705073803569" duration="2059000" />
       <workItem from="1705075872565" duration="605000" />
       <workItem from="1705077084508" duration="7069000" />
-      <workItem from="1705325069608" duration="7772000" />
+      <workItem from="1705325069608" duration="9834000" />
     </task>
     <task id="LOCAL-00001" summary="something I did before">
       <option name="closed" value="true" />
@@ -432,7 +434,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705328569668</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="minor change">
+      <option name="closed" value="true" />
+      <created>1705334354999</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1705334354999</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -450,7 +460,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change to createShape" />
     <MESSAGE value="Create the cogwheel shape" />
     <MESSAGE value="implement gear creation" />
     <MESSAGE value="todo" />
@@ -475,7 +484,8 @@
     <MESSAGE value="make hello world faster" />
     <MESSAGE value="change color of misused rotation" />
     <MESSAGE value="add comment" />
-    <option name="LAST_COMMIT_MESSAGE" value="add comment" />
+    <MESSAGE value="minor change" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor change" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
