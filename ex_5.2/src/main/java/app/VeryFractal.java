@@ -4,6 +4,7 @@ import processing.core.PApplet;
 
 public class VeryFractal extends PApplet {
 
+    // Codebase from gitlab!
     private int t1x;
     private int t1y;
     private int t2x;
