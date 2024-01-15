@@ -20,7 +20,7 @@ public class BouncingBalls extends PApplet {
         frameRate(60);
         for (int i = 1; i <= BALL_AMOUNT; i++) {
             final PVector startPos = new PVector(random(0, width), random(0, height));
-            balls.add(new Ball(startPos, height, width, 2.2f));
+            balls.add(new Ball(startPos, height, width, 0.5f));
         }
     }
 

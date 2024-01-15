@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="reformat all">
-      <change afterPath="$PROJECT_DIR$/own_0_test_stuff/src/main/java/FIsh.java" afterDir="false" />
+    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="make fin move">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex_8.1/src/main/java/app/Fish.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_8.1/src/main/java/app/Fish.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex_8.1/src/main/java/app/FishAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_8.1/src/main/java/app/FishAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/own_0_test_stuff/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/own_0_test_stuff/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/own_0_test_stuff/src/main/java/Ignore.java" beforeDir="false" afterPath="$PROJECT_DIR$/own_0_test_stuff/src/main/java/Ignore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_5.3/src/main/java/app/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_5.3/src/main/java/app/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_5.3/src/main/java/app/BouncingBalls.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_5.3/src/main/java/app/BouncingBalls.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/resources/temp.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +44,7 @@
     "Application.Main (2).executor": "Run",
     "Application.Main (3).executor": "Run",
     "Application.Main (4).executor": "Run",
-    "Application.Main (5).executor": "Run",
+    "Application.Main (5).executor": "Debug",
     "Application.Main.executor": "Run",
     "Application.SpaceInvaders.executor": "Run",
     "Application.VeryFractal.executor": "Run",
@@ -95,7 +93,7 @@
       <recent name="app" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main (3)">
+  <component name="RunManager" selected="Application.Main (5)">
     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ex_6.1" />
@@ -117,13 +115,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ex_6.1" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Main (5)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ex_5.3" />
@@ -131,13 +122,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ex_7.1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main (5)" />
+        <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (3)" />
         <item itemvalue="Application.Main (2)" />
-        <item itemvalue="Application.Main (1)" />
-        <item itemvalue="Application.Main (5)" />
-        <item itemvalue="Application.Main (4)" />
       </list>
     </recent_temporary>
   </component>
@@ -184,7 +182,8 @@
       <workItem from="1705063906201" duration="9623000" />
       <workItem from="1705073803569" duration="2059000" />
       <workItem from="1705075872565" duration="605000" />
-      <workItem from="1705077084508" duration="6892000" />
+      <workItem from="1705077084508" duration="7069000" />
+      <workItem from="1705325069608" duration="2046000" />
     </task>
     <task id="LOCAL-00001" summary="something I did before">
       <option name="closed" value="true" />
@@ -394,7 +393,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705077234433</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="make fin move">
+      <option name="closed" value="true" />
+      <created>1705101949769</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1705101949769</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -412,7 +419,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="something I did before" />
     <MESSAGE value="Back to java 17" />
     <MESSAGE value="gears quick save" />
     <MESSAGE value="gears draw function" />
@@ -437,6 +443,9 @@
     <MESSAGE value="." />
     <MESSAGE value="update gitignore" />
     <MESSAGE value="reformat all" />
-    <option name="LAST_COMMIT_MESSAGE" value="reformat all" />
+    <MESSAGE value="make fin move" />
+    <option name="LAST_COMMIT_MESSAGE" value="make fin move" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

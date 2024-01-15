@@ -11,64 +11,43 @@ import static processing.core.PApplet.dist;
 public class Ball {
     private final PVector vPos;
     private final PVector vDir;
-    final private float GRAVITY_ACCELERATION = 2.2f;
+    final private float GRAVITY_ACCELERATION = 9.81f;
 
-    private float acceleration;
+    private float accel;
     private int diameter;
     private int bottom;
     private int right;
 
-
-    public Ball(final PVector vStart, final int bottom, final int right) {
+    public Ball(final PVector vStart, final int bottom, final int right, final float accel) {
         this.vPos = vStart;
         this.vDir = new PVector(0, 0);
         this.bottom = bottom;
         this.right = right;
         this.diameter = 15;
-        this.acceleration = 1;
+        this.accel = accel;
     }
-
-    public Ball(final PVector vStart, final int bottom, final int right, final float acceleration) {
-        this.vPos = vStart;
-        this.vDir = new PVector(0, 0);
-        this.bottom = bottom;
-        this.right = right;
-        this.diameter = 15;
-        this.acceleration = acceleration;
-    }
-
-    public Ball(final PVector vStart, final int bottom, final int right, final int diameter) {
-        this.vPos = vStart;
-        this.vDir = new PVector(0, 0);
-        this.bottom = bottom;
-        this.right = right;
-        this.diameter = diameter;
-        this.acceleration = 1;
-    }
-
 
     public void attract(final PVector vAttractTo) {
         final PVector vDestination = vAttractTo.sub(vPos);
-        this.vDir.add(vDestination.normalize());
-        this.vDir.normalize().mult(acceleration);
+        this.vDir.add(vDestination.normalize().mult(accel));
         this.updatePos();
     }
 
     public void repel(final PVector vRepelFrom) {
-        final PVector vAttractTo = new PVector(-vRepelFrom.x, -vRepelFrom.y);
-        final PVector vDestination = vAttractTo.add(this.vPos);
-        this.vDir.add(vDestination.normalize());
-        this.vDir.normalize().mult(acceleration * 4);
+        final PVector vAttractTo = vRepelFrom.sub(vPos);
+        this.vDir.sub(vAttractTo.normalize().mult(accel));
         this.updatePos();
     }
 
     public void fall() {
-//        if(this.vPos.y < this.bottom - this.diameter) {
-        final PVector vDestination = new PVector(this.vPos.x, this.bottom - this.diameter).sub(vPos);
-        this.vDir.add(vDestination.normalize());
-        this.vDir.normalize().mult(GRAVITY_ACCELERATION);
-        this.updatePos();
-//        }
+        if (this.vPos.y < this.bottom - this.diameter) {
+            final PVector vDestination = new PVector(this.vPos.x, this.bottom - this.diameter).sub(vPos);
+            this.vDir.add(vDestination.normalize());
+            this.vDir.normalize().mult(GRAVITY_ACCELERATION);
+            this.updatePos();
+        } else {
+            this.vDir.setMag(0);
+        }
     }
 
     public List<Ball> getCollisions(final List<Ball> balls) {
@@ -112,12 +91,12 @@ public class Ball {
         return GRAVITY_ACCELERATION;
     }
 
-    public float getAcceleration() {
-        return acceleration;
+    public float getAccel() {
+        return accel;
     }
 
-    public void setAcceleration(float acceleration) {
-        this.acceleration = acceleration;
+    public void setAccel(float accel) {
+        this.accel = accel;
     }
 
     public int getDiameter() {
