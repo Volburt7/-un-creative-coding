@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="Change translation logic">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="8ce0a686-cf82-48af-af8e-3c5bdcc189e6" name="Changes" comment="Update gitignore">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_6.1/src/main/java/app/GearSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_6.1/src/main/java/app/GearSimulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_7.2/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ex_7.2/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex_7.2/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex_7.2/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,44 +35,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GrowFormSpin.executor": "Run",
-    "Application.HelloWorld.executor": "Run",
-    "Application.ImagePixelation.executor": "Run",
-    "Application.Main (1).executor": "Run",
-    "Application.Main (2).executor": "Run",
-    "Application.Main (3).executor": "Run",
-    "Application.Main (4).executor": "Run",
-    "Application.Main (5).executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.SpaceInvaders.executor": "Run",
-    "Application.VeryFractal.executor": "Run",
-    "Maven.creative_coding [clean].executor": "Run",
-    "Maven.creative_coding [compile].executor": "Run",
-    "Maven.ex_7.1 [install].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "jdk.selected.JAVA_MODULE": "corretto-17",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Oliver/IdeaProjects/creative_coding",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "show.migrate.to.gradle.popup": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GrowFormSpin.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloWorld.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ImagePixelation.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (2).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (3).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (4).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (5).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.SpaceInvaders.executor&quot;: &quot;Run&quot;,
+    &quot;Application.VeryFractal.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.creative_coding [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.creative_coding [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.ex_7.1 [install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-17&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Oliver/IdeaProjects/creative_coding&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Oliver\IdeaProjects\creative_coding\own_0_test_stuff\src\main\java" />
@@ -99,16 +101,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ex_4.1" />
+      <module name="ex_7.1" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ex_4.2" />
+      <module name="2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -130,19 +132,12 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.Main (3)" />
+        <item itemvalue="Application.Main (2)" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (5)" />
-        <item itemvalue="Application.Main (4)" />
-        <item itemvalue="Application.Main (3)" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-17.0.9-corretto-17.0.9-f644763e9732-ebaef533" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -181,7 +176,15 @@
       <workItem from="1705073803569" duration="2059000" />
       <workItem from="1705075872565" duration="605000" />
       <workItem from="1705077084508" duration="7069000" />
-      <workItem from="1705325069608" duration="12761000" />
+      <workItem from="1705325069608" duration="17846000" />
+      <workItem from="1705605154704" duration="27000" />
+      <workItem from="1706380740500" duration="135000" />
+      <workItem from="1706380914272" duration="597000" />
+      <workItem from="1708258329440" duration="892000" />
+      <workItem from="1708261313219" duration="676000" />
+      <workItem from="1708262857885" duration="71000" />
+      <workItem from="1708264600541" duration="458000" />
+      <workItem from="1712451522686" duration="207000" />
     </task>
     <task id="LOCAL-00001" summary="something I did before">
       <option name="closed" value="true" />
@@ -455,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705340043549</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Update gitignore">
+      <option name="closed" value="true" />
+      <created>1705340117739</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1705340117739</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -473,7 +484,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="todo" />
     <MESSAGE value="Kinda finished but kinda not" />
     <MESSAGE value="Some changes" />
     <MESSAGE value="add link" />
@@ -498,7 +508,8 @@
     <MESSAGE value="minor change" />
     <MESSAGE value="Remove DynamicGearHolder" />
     <MESSAGE value="Change translation logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change translation logic" />
+    <MESSAGE value="Update gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update gitignore" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
