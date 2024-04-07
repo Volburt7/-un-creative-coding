@@ -23,7 +23,6 @@ public class Gear {
     private GearCreationState gearCreationState;
     private int toothCount;
     private float radius;
-    private float initialRadiansOffset;
     private float radiansOffset;
 
     private boolean isMotor;
