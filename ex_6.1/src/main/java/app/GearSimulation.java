@@ -15,12 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GearSimulation extends PApplet {
-    private final static Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
     private final boolean HIDDEN_MODE = false;
     private final List<Gear> gears = new ArrayList<>();
 
     private Gear gearInCreation = null;
-    private boolean imageFlag = false;
 
     @Override
     public void settings() {
@@ -89,7 +88,7 @@ public class GearSimulation extends PApplet {
                 case BACKSPACE -> gearInCreation = null;
                 case ENTER, 32 -> continueGearCreation();
             }
-        } else if (keyEvent.getKeyCode() == 116) { // F5 = Reload
+        } else if (keyEvent.getKeyCode() == 116 || keyEvent.getKeyCode() == 82) { // Reload: F5 / R
             updateGearList();
         }
     }
@@ -107,7 +106,6 @@ public class GearSimulation extends PApplet {
         final List<Gear> motors = getMotors();
         final List<Gear> updatedEntries = new ArrayList<>(motors); // antiLoopList
         motors.forEach(motor -> translateGearRotation(motor, updatedEntries));
-        imageFlag = true;
     }
 
     private List<Gear> getMotors() {
@@ -137,7 +135,8 @@ public class GearSimulation extends PApplet {
         gear.setRpm(motor.getRpm() * translationRatio);
         gear.setDirection(Direction.LEFT.equals(motor.getDirection()) ? Direction.RIGHT : Direction.LEFT);
 
-        final float newOffset = motor.getRadiansOffset() * translationRatio - (TWO_PI / motor.getToothCount() / 2);
+        final float newOffset = motor.getRadiansOffset() * translationRatio;
+//        final float newOffset = motor.getRadiansOffset() * translationRatio - (TWO_PI / motor.getToothCount() / 2);
         gear.setRadiansOffset(newOffset);
     }
 
@@ -145,6 +144,33 @@ public class GearSimulation extends PApplet {
     public void setup() {
         frameRate(MyConsts.FPS);
         gears.clear();
+        addTestGears();
+    }
+
+    private void addTestGears() {
+        final Gear g1 = Gear.builder()
+                .gearCreationState(GearCreationState.CREATED)
+                .rpm(11)
+                .isMotor(true)
+                .direction(Direction.LEFT)
+                .positionX(80)
+                .positionY(100)
+                .radiansOffset(0)
+                .toothCount(10)
+                .build();
+        g1.updateSize(100);
+        gears.add(g1);
+
+        final Gear g2 = Gear.builder()
+                .gearCreationState(GearCreationState.CREATED)
+                .isMotor(false)
+                .positionX(200)
+                .positionY(100)
+                .radiansOffset(0)
+                .toothCount(30)
+                .build();
+        g2.updateSize(100);
+        gears.add(g2);
     }
 
     @Override
@@ -156,11 +182,6 @@ public class GearSimulation extends PApplet {
 
         if (gearInCreation != null) {
             drawGear(gearInCreation);
-        }
-
-        if (imageFlag) {
-            saveFrame("./img/aahg_" + gears.size() + ".png");
-            imageFlag = false;
         }
     }
 

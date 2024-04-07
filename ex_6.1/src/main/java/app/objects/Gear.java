@@ -31,14 +31,20 @@ public class Gear {
     private Direction direction;
     private float rpm;
 
+    public static boolean isConnected(final Gear gear1, final Gear gear2) {
+        final float dist = dist(gear1.getPositionX(), gear1.getPositionY(), gear2.getPositionX(), gear2.getPositionY());
+        final float radiusSum = gear1.getRadius() + gear2.getRadius() + 2 * Gear.TOOTH_SIZE;
+        return dist < radiusSum;
+    }
+
     private int calculateToothCount(final float radius) {
         final float circumcise = TWO_PI * radius;
         return Math.round(circumcise / TOOTH_SIZE / 4);
     }
 
     public void updateRadius(final float xDirection, final float yDirection) {
-        final float radius = dist(this.getPositionX(), this.getPositionY(), xDirection, yDirection);
-        this.updateSize(radius);
+        final float r = dist(this.getPositionX(), this.getPositionY(), xDirection, yDirection);
+        this.updateSize(r);
     }
 
     public void updateLocation(final float xDirection, final float yDirection) {
@@ -89,12 +95,6 @@ public class Gear {
     public void updateSize(final float radius) {
         this.toothCount = calculateToothCount(radius);
         this.radius = this.toothCount * TOOTH_SIZE / PI;
-    }
-
-    public static boolean isConnected(final Gear gear1, final Gear gear2) {
-        final float dist = dist(gear1.getPositionX(), gear1.getPositionY(), gear2.getPositionX(), gear2.getPositionY());
-        final float radiusSum = gear1.getRadius() + gear2.getRadius() + 2 * Gear.TOOTH_SIZE;
-        return dist < radiusSum;
     }
 
 }
