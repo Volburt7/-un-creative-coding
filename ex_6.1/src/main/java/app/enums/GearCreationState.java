@@ -5,5 +5,6 @@ public enum GearCreationState {
     TYPE,
     DIRECTION,
     SPEED,
+    COLOR,
     CREATED
 }

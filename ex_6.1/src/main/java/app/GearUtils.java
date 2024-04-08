@@ -34,6 +34,9 @@ public class GearUtils {
                 return SPEED;
             }
             case SPEED -> {
+                return COLOR;
+            }
+            case COLOR -> {
                 return CREATED;
             }
             default -> throw new GearException("Unknown Gear state.");

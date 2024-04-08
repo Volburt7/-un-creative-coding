@@ -71,6 +71,7 @@ public class GearSimulation extends PApplet {
                 case TYPE -> toggleType();
                 case DIRECTION -> toggleDirection();
                 case SPEED -> updateSpeed(mouseEvent.getCount());
+                case COLOR -> updateColor();
                 default -> LOG.info("Scrolling won't effect state '{}'", gearInCreation.getGearCreationState());
             }
         }
@@ -100,6 +101,10 @@ public class GearSimulation extends PApplet {
         if (newRPM >= 1) {
             gearInCreation.setRpm(newRPM);
         }
+    }
+
+    private void updateColor() {
+        gearInCreation.setColor(color(random(255), random(255), random(255)));
     }
 
     @Override
@@ -172,7 +177,6 @@ public class GearSimulation extends PApplet {
             final List<Gear> chainedList = getChainedList(motor);
             final long numMotors = chainedList.stream().filter(Gear::isMotor).count();
             if(numMotors == 1) {
-                motor.setColor(color(random(255), random(255), random(255)));
                 translateGearRotation(motor, updatedEntries);
             } else {
                 chainedList.forEach(gear -> gear.setBlocked(true));
@@ -424,7 +428,10 @@ public class GearSimulation extends PApplet {
                 }
                 popMatrix();
             }
-            case SPEED, CREATED -> text(round(gear.getRpm()), 0, yTextOffset);
+            case SPEED, COLOR, CREATED -> {
+                fill(gear.getColor());
+                text(round(gear.getRpm()), 0, yTextOffset);
+            }
             default -> LOG.info("Maybe something got wrong. Type was '{}'", gear.getGearCreationState());
         }
     }
