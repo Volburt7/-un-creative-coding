@@ -5,6 +5,7 @@ import app.enums.GearCreationState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.core.PShape;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
@@ -14,9 +15,11 @@ import java.util.List;
 
 public class GearSimulation extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
-    private final boolean HIDDEN_MODE = true;
+    private final boolean HIDDEN_MODE = false;
     private final List<Gear> gears = new ArrayList<>();
 
+    private PImage left;
+    private PImage right;
     private Gear gearInCreation;
 
     @Override
@@ -58,14 +61,14 @@ public class GearSimulation extends PApplet {
 
     @Override
     public void mouseWheel(final MouseEvent mouseEvent) {
-//        if (gearInCreation != null) {
-        switch (gearInCreation.getGearCreationState()) {
-            case TYPE -> toggleType();
-            case DIRECTION -> toggleDirection();
-            case SPEED -> updateSpeed(mouseEvent.getCount());
-            default -> LOG.info("Scrolling won't effect state '{}'", gearInCreation.getGearCreationState());
+        if (gearInCreation != null) {
+            switch (gearInCreation.getGearCreationState()) {
+                case TYPE -> toggleType();
+                case DIRECTION -> toggleDirection();
+                case SPEED -> updateSpeed(mouseEvent.getCount());
+                default -> LOG.info("Scrolling won't effect state '{}'", gearInCreation.getGearCreationState());
+            }
         }
-//        }
     }
 
     private void toggleType() {
@@ -130,10 +133,6 @@ public class GearSimulation extends PApplet {
 
     private void updateGearList() {
         final List<Gear> motors = getMotors();
-        // TODO: remove
-//        motors.forEach(motor -> motor.setRadiansOffset(0f)); // Set all motors to initial position 0
-        motors.get(0).setRadiansOffset(1.2f);
-
         final List<Gear> updatedEntries = new ArrayList<>(motors);
         motors.forEach(motor -> translateGearRotation(motor, updatedEntries));
     }
@@ -170,169 +169,42 @@ public class GearSimulation extends PApplet {
     }
 
     private float calculateNewRadiansOffset(final Gear motor, final Gear gear) {
-        // TODO: last part - Calculate the correct radians offset depending on the rad offset of the motor.
-        //      I swear to god. This is hard af...
-
-        // Degree between the 2 gears
-        float angle = atan2(gear.getPositionY() - motor.getPositionY(), gear.getPositionX() - motor.getPositionX());
-        if (angle < 0) {
-            angle += TWO_PI;
+        float motorToGearAngle = atan2(gear.getPositionY() - motor.getPositionY(), gear.getPositionX() - motor.getPositionX());
+        if (motorToGearAngle < 0) {
+            motorToGearAngle += TWO_PI;
         }
+        final float gearToMotorAngle = (motorToGearAngle + PI) % TWO_PI;
 
-        final float motorSinLength = TWO_PI / (motor.getToothCount() * Gear.TOOTH_SIZE);
-        final float gearSinLength = TWO_PI / (gear.getToothCount() * Gear.TOOTH_SIZE);
-
-        final float currentMotorSin = motor.getRadiansOffset() % motorSinLength;
+        final float singleGearSin = TWO_PI / gear.getToothCount();
 
         final float translationRatio = (float) motor.getToothCount() / (float) gear.getToothCount();
-        final float currentGearSin = (motorSinLength / 2 + currentMotorSin) * translationRatio;
-        LOG.info("motor sin {}, gear sin {}", currentMotorSin, currentGearSin);
 
-        return currentGearSin;
+        // the following line I got from https://geargenerator.com -> I gave up on wrapping my head around it....
+        final float newRadOffset = PI - ((motor.getRadiansOffset() + gearToMotorAngle) * translationRatio) - gearToMotorAngle;
+
+        if ((gear.getToothCount() + motor.getToothCount()) % 2 == 0) {
+            // even - even or odd - odd
+            return newRadOffset;
+        } else {
+            // even - odd | odd - even
+            return newRadOffset + singleGearSin / 2;
+        }
     }
 
     @Override
     public void setup() {
         frameRate(MyConsts.FPS);
         gears.clear();
-
-//        addTestGearsWithCorrectOffset();
-//        addTestGearsNoOffset();
-        addTestGears();
-
-        updateGearList();
+        loadResources();
     }
 
-    private void addTestGearsWithCorrectOffset() {
-        final Gear g1 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .rpm(10)
-                .isMotor(true)
-                .direction(Direction.LEFT)
-                .positionX(100)
-                .positionY(100)
-                .radiansOffset(0f)
-                .build();
-        g1.updateSize(250, 250);
-        gears.add(g1);
-
-        final Gear g2 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .isMotor(false)
-                .positionX(300)
-                .positionY(300)
-                .radiansOffset(1.5f)
-                .build();
-        g2.updateSize(340, 340);
-        gears.add(g2);
-
-        final Gear g3 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .isMotor(false)
-                .positionX(380)
-                .positionY(100)
-                .radiansOffset(1)
-                .radiansOffset(1)
-                .build();
-        g3.updateSize(440, 100);
-        gears.add(g3);
+    private void loadResources() {
+        left = loadImage("left.png");
+        right = loadImage("right.png");
     }
-
-    private void addTestGearsNoOffset() {
-        final Gear g1 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .rpm(10)
-                .isMotor(true)
-                .direction(Direction.LEFT)
-                .positionX(100)
-                .positionY(100)
-                .radiansOffset(1.4f)
-                .build();
-        g1.updateSize(250, 250);
-        gears.add(g1);
-
-        final Gear g2 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .isMotor(false)
-                .positionX(300)
-                .positionY(300)
-                .radiansOffset(0f)
-                .build();
-        g2.updateSize(340, 340);
-        gears.add(g2);
-
-        final Gear g3 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .isMotor(false)
-                .positionX(380)
-                .positionY(100)
-                .radiansOffset(0f)
-                .build();
-        g3.updateSize(440, 100);
-        gears.add(g3);
-    }
-
-    private void addTestGears() {
-        // 8 gears
-        final Gear g1 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .rpm(10)
-                .isMotor(true)
-                .direction(Direction.LEFT)
-                .positionX(100)
-                .positionY(100)
-                .radiansOffset(2f)
-                .build();
-        g1.updateSize(150, 100);
-        gears.add(g1);
-
-        // 20 gears
-        final Gear g2 = Gear.builder()
-                .gearCreationState(GearCreationState.CREATED)
-                .rpm(10)
-                .isMotor(false)
-                .direction(Direction.LEFT)
-                .positionX(300)
-                .positionY(100)
-                .radiansOffset(0f)
-                .build();
-        g2.updateSize(425, 100);
-        gears.add(g2);
-    }
-
-//    private void addTestGears() {
-//        // 8 gears
-//        final Gear g1 = Gear.builder()
-//                .gearCreationState(GearCreationState.CREATED)
-//                .rpm(10)
-//                .isMotor(true)
-//                .direction(Direction.LEFT)
-//                .positionX(100)
-//                .positionY(100)
-//                .radiansOffset(2f)
-//                .build();
-//        g1.updateSize(150, 100);
-//        gears.add(g1);
-//
-//        // 20 gears
-//        final Gear g2 = Gear.builder()
-//                .gearCreationState(GearCreationState.CREATED)
-//                .rpm(10)
-//                .isMotor(true)
-//                .direction(Direction.LEFT)
-//                .positionX(300)
-//                .positionY(100)
-//                .radiansOffset(2f)
-//                .build();
-//        g2.updateSize(350, 100);
-//        gears.add(g2);
-//    }
 
     @Override
     public void draw() {
-        if (frameCount % 5 == 0)
-            updateGearList();
-
         background(50);
         fill(130);
         noStroke();
@@ -368,6 +240,7 @@ public class GearSimulation extends PApplet {
     }
 
     private void drawRadiansOffset(Gear gear) {
+        // Debugging
         stroke(255, 0, 0);
         strokeWeight(3L);
         final float rad = gear.getRadiansOffset();
@@ -439,12 +312,19 @@ public class GearSimulation extends PApplet {
                 }
             }
             case DIRECTION -> {
-                // TODO: img
+                final float size = gear.getRadius() / 2;
+                pushMatrix();
+                translate(-size / 2, -size / 2);
                 if (Direction.LEFT.equals(gear.getDirection())) {
-                    text("L", 0, 0);
+                    final PImage leftCpy = left.copy();
+                    leftCpy.resize((int) size, (int) size);
+                    image(leftCpy, 0, 0);
                 } else {
-                    text("R", 0, 0);
+                    final PImage rightCpy = right.copy();
+                    rightCpy.resize((int) size, (int) size);
+                    image(rightCpy, 0, 0);
                 }
+                popMatrix();
             }
             case SPEED, CREATED -> text(round(gear.getRpm()), 0, yTextOffset);
             default -> LOG.info("Maybe something got wrong. Type was '{}'", gear.getGearCreationState());
