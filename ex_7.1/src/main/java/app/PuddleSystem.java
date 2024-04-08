@@ -11,14 +11,14 @@ import java.util.List;
 
 
 public class PuddleSystem extends PApplet {
-    private final static Logger LOG = LoggerFactory.getLogger(PuddleSystem.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PuddleSystem.class);
     private final PuddleManager puddleManager;
 
-    private final List<Puddle> initialPuddles;
+    private final List<Puddle> autoInitPuddles;
 
     public PuddleSystem() {
         this.puddleManager = new PuddleManager(this);
-        initialPuddles = new ArrayList<>();
+        autoInitPuddles = new ArrayList<>();
     }
 
     @Override
@@ -29,21 +29,27 @@ public class PuddleSystem extends PApplet {
     @Override
     public void mouseReleased(final MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == LEFT) {
-            spawnPuddle(mouseEvent.getX(), mouseEvent.getY());
+            spawnNormalPuddle(mouseEvent.getX(), mouseEvent.getY());
+        } else if (mouseEvent.getButton() == RIGHT) {
+            spawnPermanentPuddle(mouseEvent.getX(), mouseEvent.getY());
         }
     }
 
-    private void spawnPuddle(final int x, final int y) {
+    private void spawnNormalPuddle(final int x, final int y) {
         final Puddle randomPuddle = puddleManager.createRandomPuddle(x, y);
         puddleManager.addToList(randomPuddle);
-        initialPuddles.add(randomPuddle);
+    }
+
+    private void spawnPermanentPuddle(final int x, final int y) {
+        final Puddle randomPuddle = puddleManager.createRandomPuddle(x, y);
+        autoInitPuddles.add(randomPuddle);
     }
 
     @Override
     public void setup() {
         frameRate(60);
         colorMode(RGB);
-        spawnPuddle(width / 2, height / 2);
+        spawnNormalPuddle(width / 2, height / 2);
     }
 
     @Override
@@ -62,7 +68,7 @@ public class PuddleSystem extends PApplet {
                 puddleManager.remove(puddle);
             }
 
-            initialPuddles.forEach(initialPuddle -> {
+            autoInitPuddles.forEach(initialPuddle -> {
                 if (!puddleManager.positionExists(initialPuddle)) {
                     puddleManager.spawnRandomPuddle((int) initialPuddle.getX(), (int) initialPuddle.getY());
                 }
