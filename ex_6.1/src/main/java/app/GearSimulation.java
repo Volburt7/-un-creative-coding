@@ -13,6 +13,7 @@ import processing.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class GearSimulation extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
@@ -119,6 +120,7 @@ public class GearSimulation extends PApplet {
             if (selectedGear != null) {
                 if (selectedGear.equals(getClickedGear(mouseEvent.getX(), mouseEvent.getY()))) {
                     gears.remove(selectedGear);
+                    gears.forEach(g -> g.setBlocked(false));
                     updateGearList();
                 } else {
                     selectedGear.setSelected(false);
@@ -165,9 +167,31 @@ public class GearSimulation extends PApplet {
     private void updateGearList() {
         final List<Gear> motors = getMotors();
         final List<Gear> updatedEntries = new ArrayList<>(motors);
+        // Quasi n doppelt/dreifach verschachtelter Loop, aber wir wollen ja mal nicht Auge machen
         motors.forEach(motor -> {
-            motor.setColor(color(random(255), random(255), random(255)));
-            translateGearRotation(motor, updatedEntries);
+            final List<Gear> chainedList = getChainedList(motor);
+            final long numMotors = chainedList.stream().filter(Gear::isMotor).count();
+            if(numMotors == 1) {
+                motor.setColor(color(random(255), random(255), random(255)));
+                translateGearRotation(motor, updatedEntries);
+            } else {
+                chainedList.forEach(gear -> gear.setBlocked(true));
+            }
+        });
+    }
+
+    private List<Gear> getChainedList(final Gear motor) {
+        final List<Gear> chainedList = new ArrayList<>();
+        someRecursiveTrash(chainedList, motor);
+        return chainedList;
+    }
+
+    private void someRecursiveTrash(final List<Gear> list, final Gear gear) {
+        getAllConnectedGears(gear).forEach(g -> {
+            if (!list.contains(g)) {
+                list.add(g);
+                someRecursiveTrash(list, g);
+            }
         });
     }
 
