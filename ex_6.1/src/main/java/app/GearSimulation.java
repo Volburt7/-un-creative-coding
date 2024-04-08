@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GearSimulation extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
-    private final boolean HIDDEN_MODE = false;
+    private static final boolean HIDDEN_MODE = false;
     private final List<Gear> gears = new ArrayList<>();
 
     private PImage left;
