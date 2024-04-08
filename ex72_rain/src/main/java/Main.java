@@ -1,7 +1,7 @@
-import app.PuddleSystem;
+import app.RainSystem;
 
 public class Main {
     public static void main(String[] args) {
-        PuddleSystem.main(PuddleSystem.class);
+        RainSystem.main(RainSystem.class);
     }
 }

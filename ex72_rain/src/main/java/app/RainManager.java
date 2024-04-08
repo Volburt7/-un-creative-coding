@@ -8,12 +8,12 @@ import java.util.List;
 
 import static processing.core.PApplet.map;
 
-public class PuddleManager {
+public class RainManager {
     private static final float MIN_STROKE_WEIGHT = 0.5f;
     private final PApplet particleSystem;
     private final List<Puddle> puddles;
 
-    public PuddleManager(final PApplet particleSystem) {
+    public RainManager(final PApplet particleSystem) {
         this.particleSystem = particleSystem;
         this.puddles = new ArrayList<>();
     }
@@ -42,7 +42,7 @@ public class PuddleManager {
         final float maxIntensity = this.particleSystem.random(1, 3);
         final float velocity = this.particleSystem.random(1, 2);
         return Puddle.builder()
-                .puddleManager(this)
+                .rainManager(this)
                 .x(x)
                 .y(y)
                 .initialLifeSpan(lifeSpan)
@@ -61,7 +61,7 @@ public class PuddleManager {
         final float radiusFactor = this.particleSystem.random(8.5f, 11.5f) / 10;
         final float newVelocity = 4 * puddle.getVelocity() / 5;
         return Puddle.builder()
-                .puddleManager(this)
+                .rainManager(this)
                 .x(puddle.getX())
                 .y(puddle.getY())
                 .initialLifeSpan((int) (puddle.getLifeSpan() * lifespanFactor))

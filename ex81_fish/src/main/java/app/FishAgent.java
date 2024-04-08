@@ -43,6 +43,6 @@ public class FishAgent extends PApplet {
         for (Fish f : fishList) {
             f.run();
         }
-        PuddleSystem.makeItRain(this);
+        PuddleSystem.makeItRain(this, 10);
     }
 }

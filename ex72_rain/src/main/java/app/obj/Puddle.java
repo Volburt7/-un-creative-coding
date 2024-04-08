@@ -1,6 +1,6 @@
 package app.obj;
 
-import app.PuddleManager;
+import app.RainManager;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import static processing.core.PApplet.map;
 @Builder
 @AllArgsConstructor
 public class Puddle {
-    private final PuddleManager puddleManager;
+    private final RainManager rainManager;
     private final float x, y;
     private final int initialLifeSpan;
     private final float initialRadius;
