@@ -125,7 +125,6 @@ public class GearSimulation extends PApplet {
             if (selectedGear != null) {
                 if (selectedGear.equals(getClickedGear(mouseEvent.getX(), mouseEvent.getY()))) {
                     gears.remove(selectedGear);
-                    gears.forEach(g -> g.setBlocked(false));
                     updateGearList();
                 } else {
                     selectedGear.setSelected(false);
@@ -170,6 +169,9 @@ public class GearSimulation extends PApplet {
 
     // TODO: I used the wrong data structure tbh but in the beginning I was too lazy to implement it as a linked list.
     private void updateGearList() {
+        gears.forEach(gear -> gear.setBlocked(false));
+        getGears().forEach(gear -> gear.setRpm(0));
+
         final List<Gear> motors = getMotors();
         final List<Gear> updatedEntries = new ArrayList<>(motors);
         // Quasi n doppelt/dreifach verschachtelter Loop, aber wir wollen ja mal nicht Auge machen
@@ -201,6 +203,10 @@ public class GearSimulation extends PApplet {
 
     private List<Gear> getMotors() {
         return gears.stream().filter(Gear::isMotor).toList();
+    }
+
+    private List<Gear> getGears() {
+        return gears.stream().filter(gear -> !gear.isMotor()).toList();
     }
 
     private void translateGearRotation(final Gear motor, final List<Gear> updatedEntries) {
