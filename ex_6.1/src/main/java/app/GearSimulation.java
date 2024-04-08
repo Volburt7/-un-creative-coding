@@ -12,48 +12,52 @@ import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GearSimulation extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(GearSimulation.class);
-    private static final boolean HIDDEN_MODE = false;
+    private static final boolean SHOW_GEAR_CREATION = true;
+    private static final int DEFAULT_COLOR = 130;
     private final List<Gear> gears = new ArrayList<>();
 
+    private int dragCount = 0;
     private PImage left;
     private PImage right;
     private Gear gearInCreation;
 
     @Override
     public void settings() {
-        size(800, 600);
-    }
-
-    @Override
-    public void mousePressed(final MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == LEFT && gearInCreation == null) {
-            gearInCreation = Gear.builder()
-                    .positionX(mouseEvent.getX())
-                    .positionY(mouseEvent.getY())
-                    .gearCreationState(GearCreationState.SIZE)
-                    .build();
-        }
+        size(1600, 900);
     }
 
     @Override
     public void mouseDragged(final MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == LEFT && gearInCreation != null) {
-            if (GearCreationState.SIZE.equals(gearInCreation.getGearCreationState())) {
-                gearInCreation.updateSize(mouseEvent.getX(), mouseEvent.getY());
-            } else {
-                gearInCreation.updateLocation(mouseEvent.getX(), mouseEvent.getY());
+        if (mouseEvent.getButton() == LEFT) {
+            dragCount++;
+            if (gearInCreation != null) {
+                dragCount = 0;
+                if (GearCreationState.SIZE.equals(gearInCreation.getGearCreationState())) {
+                    gearInCreation.updateSize(mouseEvent.getX(), mouseEvent.getY());
+                } else {
+                    gearInCreation.updateLocation(mouseEvent.getX(), mouseEvent.getY());
+                }
+            } else if (dragCount > 15) {
+                gearInCreation = Gear.builder()
+                        .positionX(mouseEvent.getX())
+                        .positionY(mouseEvent.getY())
+                        .gearCreationState(GearCreationState.SIZE)
+                        .color(color(DEFAULT_COLOR))
+                        .build();
             }
         }
     }
 
     @Override
     public void mouseReleased(final MouseEvent mouseEvent) {
+        dragCount = 0;
         if (mouseEvent.getButton() == LEFT &&
                 gearInCreation != null &&
-                gearInCreation.getToothCount() >= 3 &&
+                gearInCreation.getToothCount() > 1 &&
                 GearCreationState.SIZE.equals(gearInCreation.getGearCreationState())) {
             continueGearCreation();
         }
@@ -75,7 +79,7 @@ public class GearSimulation extends PApplet {
         gearInCreation.setMotor(!gearInCreation.isMotor());
         if (gearInCreation.isMotor()) {
             gearInCreation.setDirection(Direction.LEFT);
-            gearInCreation.setRpm(30);
+            gearInCreation.setRpm(5);
         } else {
             gearInCreation.setDirection(null);
             gearInCreation.setRpm(0);
@@ -102,9 +106,35 @@ public class GearSimulation extends PApplet {
         if (mouseEvent.getButton() == LEFT) {
             if (gearInCreation != null && !GearCreationState.SIZE.equals(gearInCreation.getGearCreationState()))
                 continueGearCreation();
+            else {
+                final Gear clickedGear = getClickedGear(mouseEvent.getX(), mouseEvent.getY());
+                gears.forEach(gear -> gear.setSelected(false));
+                if (clickedGear != null) {
+                    clickedGear.setSelected(true);
+                }
+            }
         } else if (mouseEvent.getButton() == RIGHT) {
             gearInCreation = null;
+            final Gear selectedGear = getSelectedGear();
+            if (selectedGear != null) {
+                if (selectedGear.equals(getClickedGear(mouseEvent.getX(), mouseEvent.getY()))) {
+                    gears.remove(selectedGear);
+                    updateGearList();
+                } else {
+                    selectedGear.setSelected(false);
+                }
+            }
         }
+    }
+
+    private Gear getClickedGear(final int x, final int y) {
+        for (Gear gear : gears) {
+            float distance = dist(x, y, gear.getPositionX(), gear.getPositionY());
+            if (distance <= gear.getRadius()) {
+                return gear;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -131,10 +161,14 @@ public class GearSimulation extends PApplet {
         }
     }
 
+    // TODO: I used the wrong data structure tbh but in the beginning I was too lazy to implement it as a linked list.
     private void updateGearList() {
         final List<Gear> motors = getMotors();
         final List<Gear> updatedEntries = new ArrayList<>(motors);
-        motors.forEach(motor -> translateGearRotation(motor, updatedEntries));
+        motors.forEach(motor -> {
+            motor.setColor(color(random(255), random(255), random(255)));
+            translateGearRotation(motor, updatedEntries);
+        });
     }
 
     private List<Gear> getMotors() {
@@ -142,10 +176,11 @@ public class GearSimulation extends PApplet {
     }
 
     private void translateGearRotation(final Gear motor, final List<Gear> updatedEntries) {
-        getConnectedGears(motor).forEach(gear -> {
-            if (!updatedEntries.contains(gear)) {
+        getAllConnectedGears(motor).forEach(gear -> {
+            if (!gear.equals(motor) && !updatedEntries.contains(gear)) {
                 // Updates the gear itself
                 applyTranslation(motor, gear);
+                gear.setColor(motor.getColor());
                 updatedEntries.add(gear);
 
                 // Recursive translation
@@ -154,9 +189,10 @@ public class GearSimulation extends PApplet {
         });
     }
 
-    private List<Gear> getConnectedGears(final Gear motor) {
+    private List<Gear> getAllConnectedGears(final Gear motor) {
         return gears.stream()
-                .filter(gear -> !gear.isMotor())
+                .filter(Objects::nonNull)
+                .filter(gear -> !gear.equals(motor))
                 .filter(gear -> GearUtils.areConnected(motor, gear))
                 .toList();
     }
@@ -205,9 +241,7 @@ public class GearSimulation extends PApplet {
 
     @Override
     public void draw() {
-        background(50);
-        fill(130);
-        noStroke();
+        background(0);
 
         gears.forEach(this::drawGear);
         if (gearInCreation != null && gearInCreation.getToothCount() > 0) {
@@ -216,6 +250,31 @@ public class GearSimulation extends PApplet {
         }
 
         gears.forEach(this::updateGearRadians);
+
+        final Gear selectedGear = getSelectedGear();
+        if (selectedGear != null) {
+            displayGearInfo(selectedGear);
+        }
+    }
+
+    private Gear getSelectedGear() {
+        return gears.stream().filter(Gear::isSelected).findFirst().orElse(null);
+    }
+
+    private void displayGearInfo(final Gear gear) {
+        pushMatrix();
+        fill(255);
+        textSize(14);
+        textAlign(LEFT, TOP);
+        final String info = "Position: (" + gear.getPositionX() + ", " + gear.getPositionY() + ")\n" +
+                "Tooth Count: " + gear.getToothCount() + "\n" +
+                "Radius: " + gear.getRadius() + "\n" +
+                "Radians Offset: " + gear.getRadiansOffset() + "\n" +
+                "Is Motor: " + gear.isMotor() + "\n" +
+                "RPM: " + gear.getRpm() + "\n" +
+                "Color: " + hex(gear.getColor());
+        text(info, 10, 10);
+        popMatrix();
     }
 
     private void drawGear(final Gear gear) {
@@ -223,14 +282,16 @@ public class GearSimulation extends PApplet {
 
         translate(gear.getPositionX(), gear.getPositionY());
         shape(getGearShape(gear));
-        if (!HIDDEN_MODE) {
+        if (SHOW_GEAR_CREATION) {
             drawIntoInnerCircle(gear);
         }
         drawRadiansOffset(gear);
+
         popMatrix();
     }
 
     private void updateGearRadians(final Gear gear) {
+        if (gear.isBlocked()) return;
         final float scaledRPM = TWO_PI / MyConsts.FPS / 60 * gear.getRpm();
         if (Direction.LEFT.equals(gear.getDirection())) {
             gear.setRadiansOffset(gear.getRadiansOffset() + scaledRPM);
@@ -240,7 +301,6 @@ public class GearSimulation extends PApplet {
     }
 
     private void drawRadiansOffset(Gear gear) {
-        // Debugging
         stroke(255, 0, 0);
         strokeWeight(3L);
         final float rad = gear.getRadiansOffset();
@@ -256,9 +316,11 @@ public class GearSimulation extends PApplet {
         if (GearCreationState.CREATED.equals(gear.getGearCreationState())) {
             gearShape.beginShape();
             gearShape.noStroke();
+            gearShape.fill(determineColor(gear));
         } else {
             gearShape.beginShape(POINTS);
             gearShape.stroke(255);
+            gearShape.strokeWeight(1.5f);
         }
 
         drawTeeth(gear, gearShape);
@@ -271,11 +333,21 @@ public class GearSimulation extends PApplet {
         return gearShape;
     }
 
+    private int determineColor(final Gear gear) {
+        if (gear.isSelected()) {
+            return color(0, 255, 0);
+        } else if (gear.isBlocked()) {
+            return color(255, 0, 0);
+        } else {
+            return gear.getColor();
+        }
+    }
+
     private void drawTeeth(final Gear gear, final PShape gearShape) {
-        // Logic from https://math.stackexchange.com/questions/225351/equation-of-sine
         final float deltaSinDots = TWO_PI / (gear.getToothCount() * Gear.TOOTH_SIZE);
-        final float completeCircle = TWO_PI + (10 * deltaSinDots); // 10 additional iterations due to graphic "bug"
+        final float completeCircle = TWO_PI + (deltaSinDots * 5); // 5 additional iterations due to graphic "bug"
         for (float rad = 0; rad <= completeCircle; rad += deltaSinDots) {
+            // Following 2 lines from https://math.stackexchange.com/questions/225351/equation-of-sine
             float xPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * cos(rad);
             float yPos = (gear.getRadius() + Gear.TOOTH_SIZE * sin(gear.getToothCount() * (rad + gear.getRadiansOffset()))) * sin(rad);
             gearShape.vertex(xPos, yPos);
@@ -284,7 +356,7 @@ public class GearSimulation extends PApplet {
 
     private void removeInnerCircle(final Gear gear, final PShape gearShape) {
         final float deltaSinDots = TWO_PI / (gear.getToothCount() * Gear.TOOTH_SIZE);
-        for (float rad = TWO_PI - deltaSinDots; rad >= 0; rad -= deltaSinDots) {
+        for (float rad = TWO_PI; rad >= 0; rad -= deltaSinDots) {
             float xPos = (gear.getRadius() / 2f) * cos(rad);
             float yPos = (gear.getRadius() / 2f) * sin(rad);
             gearShape.vertex(xPos, yPos);
@@ -317,10 +389,12 @@ public class GearSimulation extends PApplet {
                 translate(-size / 2, -size / 2);
                 if (Direction.LEFT.equals(gear.getDirection())) {
                     final PImage leftCpy = left.copy();
+                    changeImageColor(leftCpy, color(DEFAULT_COLOR));
                     leftCpy.resize((int) size, (int) size);
                     image(leftCpy, 0, 0);
                 } else {
                     final PImage rightCpy = right.copy();
+                    changeImageColor(rightCpy, color(DEFAULT_COLOR));
                     rightCpy.resize((int) size, (int) size);
                     image(rightCpy, 0, 0);
                 }
@@ -329,5 +403,19 @@ public class GearSimulation extends PApplet {
             case SPEED, CREATED -> text(round(gear.getRpm()), 0, yTextOffset);
             default -> LOG.info("Maybe something got wrong. Type was '{}'", gear.getGearCreationState());
         }
+    }
+
+    private void changeImageColor(final PImage img, final int color) {
+        loadPixels();
+        for (int i = 0; i < img.width; i++) {
+            for (int j = 0; j < img.height; j++) {
+                int pixelIndex = i + j * img.width;
+                // only change non-transparent pixels
+                if (alpha(img.pixels[pixelIndex]) > 0) {
+                    img.pixels[pixelIndex] = color;
+                }
+            }
+        }
+        updatePixels();
     }
 }

@@ -29,6 +29,10 @@ public class Gear {
     private Direction direction;
     private float rpm;
 
+    private boolean selected;
+    private boolean blocked;
+    private int color;
+
     public void updateSize(final float xTo, final float yTo) {
         final float r = dist(this.getPositionX(), this.getPositionY(), xTo, yTo);
         final float circumcise = TWO_PI * r;
