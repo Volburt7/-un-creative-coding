@@ -1,3 +1,3 @@
-java JDK 17 required.
+JDK 17 required.
 
-author: Oliver Rausch
+Author: Oliver Rausch (Stellen sind gekennzeichnet, sollte es nicht mein Code sein)
