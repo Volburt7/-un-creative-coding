@@ -17,34 +17,49 @@ public class SpaceInvadersWithShapes extends PApplet {
 
     @Override
     public void setup() {
+        frameRate(60);
         background(0);
         noStroke();
+        drawSpaceInvader();
+    }
+
+    @Override
+    public void draw() {
+        if (frameCount % 45 == 0) {
+            background(0);
+            drawSpaceInvader();
+        }
+    }
+
+    private void drawSpaceInvader() {
         final List<Float[]> colors = getColors();
-        for (int w = 0; w < width / 2; w += PIXEL_SIZE) {
-            for (int h = 0; h < height / 2; h += PIXEL_SIZE) {
-                if (round(random(0, 1)) == 1) {
-                    fill(0);
-                } else {
-                    final int colorIndex = floor(random(0, MAX_COLORS));
-                    // Prevent out-of-bounce
-                    if (colorIndex != MAX_COLORS) {
-                        final Float[] color = colors.get(colorIndex);
-                        fill(color[0], color[1], color[2]);
+//        for (int i = 0; i <= 200; i++) {
+            for (int w = 0; w < width / 2; w += PIXEL_SIZE) {
+                for (int h = 0; h < height / 2; h += PIXEL_SIZE) {
+                    if (round(random(0, 1)) == 1) {
+                        fill(0);
+                    } else {
+                        final int colorIndex = floor(random(0, MAX_COLORS));
+                        // Prevent out-of-bounce
+                        if (colorIndex != MAX_COLORS) {
+                            final Float[] color = colors.get(colorIndex);
+                            fill(color[0], color[1], color[2]);
+                        }
+                    }
+                    if (round(random(0, 1)) == 1) {
+                        drawInvadersCircle(w, h);
+                    } else {
+                        drawInvadersTriangle(w, h);
                     }
                 }
-                if (round(random(0, 1)) == 1) {
-                    drawInvadersCircle(w, h);
-                } else {
-                    drawInvadersTriangle(w, h);
-                }
             }
-        }
+//        }
     }
 
     private List<Float[]> getColors() {
         final List<Float[]> colors = new ArrayList<>();
         for (int i = 0; i < MAX_COLORS; i++) {
-            final Float[] randomColor = {random(50, 255), random(50, 255), random(50, 255)};
+            final Float[] randomColor = {random(0, 255), random(0, 255), random(0, 255)};
             colors.add(randomColor);
         }
         return colors;
@@ -88,10 +103,5 @@ public class SpaceInvadersWithShapes extends PApplet {
         triangle(width - p1X, height - p1Y, width - p2X, height - p2Y, width - p3X, height - p3Y);
         triangle(p1X, height - p1Y, p2X, height - p2Y, p3X, height - p3Y);
         triangle(width - p1X, p1Y, width - p2X, p2Y, width - p3X, p3Y);
-    }
-
-    @Override
-    public void draw() {
-        frameRate(60);
     }
 }

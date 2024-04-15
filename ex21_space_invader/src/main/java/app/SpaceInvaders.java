@@ -19,6 +19,18 @@ public class SpaceInvaders extends PApplet {
     public void setup() {
         background(255);
         stroke(0);
+        frameRate(60);
+        drawSpaceInvader();
+    }
+
+    @Override
+    public void draw() {
+        if (frameCount % 45 == 0) {
+            drawSpaceInvader();
+        }
+    }
+
+    private void drawSpaceInvader() {
         final List<Float[]> colors = getColors();
         for (int w = 0; w < width / 2; w += PIXEL_SIZE) {
             for (int h = 0; h < height / 2; h += PIXEL_SIZE) {
@@ -51,10 +63,5 @@ public class SpaceInvaders extends PApplet {
         rect(width - w - PIXEL_SIZE, height - h - PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
         rect(w, height - h - PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
         rect(width - w - PIXEL_SIZE, h, PIXEL_SIZE, PIXEL_SIZE);
-    }
-
-    @Override
-    public void draw() {
-        frameRate(60);
     }
 }

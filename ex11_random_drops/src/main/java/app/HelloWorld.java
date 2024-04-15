@@ -7,7 +7,7 @@ import java.util.List;
 
 public class HelloWorld extends PApplet {
 
-    private final int CHECKS = 20;
+    private final int CHECKS = 33;
     private List<Integer> nextCheckList = new ArrayList<>();
 
     public void settings() {
@@ -16,7 +16,7 @@ public class HelloWorld extends PApplet {
 
     @Override
     public void setup() {
-        background(45, 45, 70);
+        background(4, 0, 20);
         setCheckList();
     }
 
@@ -36,7 +36,7 @@ public class HelloWorld extends PApplet {
         new ArrayList<>(nextCheckList).forEach(check -> {
             if (frameCount % check == 0) {
                 noStroke();
-                fill(random(0, 100), random(100, 180), random(80, 160));
+                fill(random(100, 255), random(140, 255), random(0, 120));
                 float radius = random(12, 30);
                 ellipse(random(0, width), random(0, height), radius, radius);
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class FishAgent extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(FishAgent.class);
     private final List<Fish> fishList = new ArrayList<>();
-
+    private RainSystem rainSystem;
     @Override
     public void settings() {
         size(1280, 720);
@@ -21,6 +21,9 @@ public class FishAgent extends PApplet {
     public void setup() {
         frameRate(60);
         colorMode(RGB);
+
+        rainSystem = new RainSystem(this);
+
         for (int i = 0; i < 100; i++) {
             final float initialAngle = random(TWO_PI);
             fishList.add(Fish.builder()
@@ -43,6 +46,6 @@ public class FishAgent extends PApplet {
         for (Fish f : fishList) {
             f.run();
         }
-        PuddleSystem.makeItRain(this, 10);
+        rainSystem.update(this, 2);
     }
 }

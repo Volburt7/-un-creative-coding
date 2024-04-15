@@ -5,23 +5,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 
+import static app.Consts.MAX_LIFE;
+import static app.Consts.MIN_LIFE;
+
 
 public class RainSystem extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(RainSystem.class);
+
     private final RainManager rainManager;
 
     public RainSystem() {
         this.rainManager = new RainManager(this);
     }
 
-    public static void makeItRain(final PApplet app, final int rainSpeed) {
-        final RainManager pm = new RainManager(app);
-
-//        if (app.frameCount % rainSpeed == 0) {
-//            pm.addToList(getRandomPuddle(app.width / 2, app.height / 2));
-//        }
-//        updatePuddles(pm);
-//        drawPuddles(pm);
+    public RainSystem(final PApplet app) {
+        this.rainManager = new RainManager(app);
     }
 
     @Override
@@ -29,32 +27,31 @@ public class RainSystem extends PApplet {
         size(1280, 720);
     }
 
-
     @Override
     public void setup() {
         frameRate(60);
         colorMode(RGB);
     }
 
-
     @Override
     public void draw() {
         background(20, 30, 140, 140);
 
-        if (frameCount % 10 == 0) {
-            this.rainManager.addToList(getRandomPuddle());
+        update(this, 1);
+    }
+
+    public void update(final PApplet app, final int speed) {
+        if (app.frameCount % speed == 0) {
+            final Puddle newPuddle = rainManager.createRandomPuddle((int) random(0, app.width), (int) random(0, app.height));
+            this.rainManager.addToList(newPuddle);
         }
 
         updatePuddles(this.rainManager);
-        drawPuddles(this.rainManager);
-    }
-
-    private Puddle getRandomPuddle() {
-        return rainManager.createRandomPuddle((int) random(0, width), (int) random(0, height));
+        drawPuddles(app, this.rainManager);
     }
 
     private void updatePuddles(final RainManager pm) {
-        pm.getPuddles().forEach(puddle -> {
+        pm.getPuddlesCopy().forEach(puddle -> {
             if (puddle.isActive()) {
                 pm.updatePuddle(puddle);
 
@@ -67,12 +64,13 @@ public class RainSystem extends PApplet {
         });
     }
 
-    void drawPuddles(final RainManager pm) {
-        noFill();
-        pm.getPuddles().stream().filter(Puddle::isActive)
+    private void drawPuddles(final PApplet app, final RainManager pm) {
+        app.noFill();
+        pm.getPuddlesCopy().stream().filter(Puddle::isActive)
                 .forEach(puddle -> {
-                    stroke(0, 200, 250, puddle.getLifeSpan());
-                    ellipse(puddle.getX(), puddle.getY(), puddle.getRadius(), puddle.getRadius());
+                    final float transparency = map(puddle.getLifeSpan(), MIN_LIFE, MAX_LIFE, 0, 255);
+                    app.stroke(0, 200, 250, transparency);
+                    app.ellipse(puddle.getX(), puddle.getY(), puddle.getRadius(), puddle.getRadius());
                 });
     }
 }

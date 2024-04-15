@@ -18,12 +18,12 @@ public class MisusedRotation extends PApplet {
 
     @Override
     public void setup() {
-        background(255);
+        background(0);
         frameRate(144);
         squareParameters = new MySquare[usedWidth / SQUARE_SIZE][usedHeight / SQUARE_SIZE];
         for (int w = 0; w < usedWidth / SQUARE_SIZE; w++) {
             float sizeChange = random(0.01f, 0.05f);
-            final List<Float> color = List.of(random(0, 255), random(0, 50), random(0, 50));
+            final List<Float> color = List.of(random(0, 60), random(0, 160), random(0, 180));
             for (int h = 0; h < usedHeight / SQUARE_SIZE; h++) {
                 squareParameters[w][h] = new MySquare(sizeChange, color);
                 sizeChange += random(0.01f, 0.05f);
@@ -33,13 +33,13 @@ public class MisusedRotation extends PApplet {
 
     @Override
     public void draw() {
-        background(255);
+        background(24);
         noStroke();
         if (mousePressed) {
             if (mouseButton == LEFT) {
-                offsetDelta += 0.000001f;
+                offsetDelta += 0.00001f;
             } else if (mouseButton == RIGHT) {
-                offsetDelta -= 0.000001f;
+                offsetDelta -= 0.00001f;
             } else if (mouseButton == CENTER) {
                 offsetDelta = 0;
             }

@@ -11,7 +11,7 @@ import java.util.List;
 public class Processing extends PApplet {
     private final static Logger LOG = LoggerFactory.getLogger(Processing.class);
     private final static long MAX_PRIME = 10000000;
-    private final static float ZOOM_INC = 0.5f;
+    private final static float ZOOM_INC = 0.05f;
 
     private float zoom = 1f;
 
