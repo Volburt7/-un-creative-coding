@@ -10,6 +10,7 @@ public class BouncingBalls extends PApplet {
     private static final int WINDOW_SIZE = 1024;
     private static final float ARENA_RADIUS = WINDOW_SIZE * 0.4f;
     private static final float BALL_RADIUS = ARENA_RADIUS * 0.08f;
+    private static final float GRAVITY = 0.08f;
 
     private final List<Ball> balls = new ArrayList<>();
     private int lastCollisionColor = color(255, 0, 0);
@@ -62,8 +63,9 @@ public class BouncingBalls extends PApplet {
                     handleCollision(check, ball);
                 }
             }
+            check.getVDir().add(0, GRAVITY);
+            check.getVPos().add(check.getVDir());
         }
-        balls.forEach(ball -> ball.getVPos().add(ball.getVDir()));
     }
 
     private boolean checkBorderCollision(final Ball b) {
@@ -76,6 +78,7 @@ public class BouncingBalls extends PApplet {
         lastCollisionColor = ball.getColor();
         final PVector center = new PVector(width * 0.5f, height * 0.5f);
         final PVector directionToCenter = PVector.sub(center, ball.getVPos()).normalize();
+        directionToCenter.setMag(ball.getVDir().mag());
         ball.getVDir().set(directionToCenter);
         ball.getVPos().add(ball.getVDir());
         if (random(0, 1) > 0.75f) {
@@ -97,17 +100,21 @@ public class BouncingBalls extends PApplet {
         return distBetween < radiusSum;
     }
 
-    private static void handleCollision(final Ball check, final Ball ball) {
-        final PVector directionAway = PVector.sub(check.getVPos(), ball.getVPos()).normalize();
-        check.getVDir().set(directionAway);
+    private void handleCollision(final Ball ball, final Ball other) {
+        // Todo: This logic is broken and i dont know tbh...
+        final PVector collisionVector = PVector.sub(ball.getVPos(), other.getVPos());
+        collisionVector.normalize();
+        final float velAlongCollision = PVector.dot(ball.getVDir(), collisionVector);
+        final PVector newVelDir = PVector.sub(ball.getVDir(), PVector.mult(collisionVector, 2 * velAlongCollision));
+        ball.setVDir(newVelDir);
     }
 
     private Ball.BallBuilder newBall() {
         return Ball.builder()
                 .radius(BALL_RADIUS)
-                .color(color(random(0, 255), random(0, 255), random(0, 255)))
+                .color(color(random(75, 255), random(75, 255), random(20, 255)))
                 .vPos(new PVector(width * 0.5f, height * 0.5f))
-                .vDir(new PVector(random(-2, 2), random(-5, -2)));
+                .vDir(new PVector(random(-4, 4), random(-5, -2)));
     }
 
     private void drawBorder() {
