@@ -12,6 +12,7 @@ public class BouncingBalls extends PApplet {
     private static final float BALL_RADIUS = ARENA_RADIUS * 0.08f;
 
     private final List<Ball> balls = new ArrayList<>();
+    private int lastCollisionColor = color(255, 0, 0);
 
     @Override
     public void settings() {
@@ -28,12 +29,10 @@ public class BouncingBalls extends PApplet {
     private void addInitialBalls() {
         balls.add(newBall()
                 .vPos(new PVector(width * 0.5f, height * 0.5f))
-                .vDir(new PVector(0, 2f))
                 .build()
         );
         balls.add(newBall()
                 .vPos(new PVector(width * 0.5f, height * 0.5f - BALL_RADIUS * 5))
-                .vDir(new PVector(0, 4f))
                 .build()
         );
     }
@@ -44,6 +43,7 @@ public class BouncingBalls extends PApplet {
 
         updateInnerCircles();
 
+        drawOuterCircleCollisionLightUp();
         drawOuterCircle();
         drawInnerCircles();
     }
@@ -52,11 +52,11 @@ public class BouncingBalls extends PApplet {
         final List<Ball> balls_cpy = new ArrayList<>(balls);
         for (final Ball check : balls_cpy) {
             if (checkBorderCollision(check)) {
-
+                lastCollisionColor = check.getColor();
                 PVector center = new PVector(width / 2, height / 2);
                 PVector directionToCenter = PVector.sub(center, check.getVPos()).normalize();
-
                 check.getVDir().set(directionToCenter);
+                check.getVPos().add(check.getVDir());
                 if (random(0, 1) > 0.75f) {
                     // 25% to remove ball
                     System.out.println("removing ball");
@@ -65,7 +65,7 @@ public class BouncingBalls extends PApplet {
                 if (random(0, 1) > 0.75f) {
                     // 25% to spawn new ball
                     System.out.println("spawn new ball");
-                    spawnNewBallInApproximateArea(check);
+                    spawnNewBallInCenter();
                 }
             }
             for (final Ball ball : balls_cpy) {
@@ -81,20 +81,17 @@ public class BouncingBalls extends PApplet {
         balls.forEach(ball -> ball.getVPos().add(ball.getVDir()));
     }
 
-    private void spawnNewBallInApproximateArea(final Ball ball) {
-        final PVector pos = new PVector(ball.getVPos().x, ball.getVPos().y);
-        final PVector dir = new PVector(ball.getVDir().x, ball.getVPos().y);
-        balls.add(newBall()
-                .vPos(pos)
-                .vDir(dir)
-                .build()
+    private void spawnNewBallInCenter() {
+        balls.add(newBall().build()
         );
     }
 
     private Ball.BallBuilder newBall() {
         return Ball.builder()
                 .radius(BALL_RADIUS)
-                .color(color(random(0, 255), random(0, 255), random(0, 255)));
+                .color(color(random(0, 255), random(0, 255), random(0, 255)))
+                .vPos(new PVector(width * 0.5f, height * 0.5f))
+                .vDir(new PVector(random(-2,2), random(-5,-2)));
     }
 
     private boolean checkCollision(final Ball b1, final Ball b2) {
@@ -115,6 +112,13 @@ public class BouncingBalls extends PApplet {
         stroke(255);
         strokeWeight(3f);
         ellipse(width * 0.5f, height * 0.5f, width * 0.4f, height * 0.4f);
+    }
+
+    private void drawOuterCircleCollisionLightUp() {
+        fill(color(red(lastCollisionColor), green(lastCollisionColor), blue(lastCollisionColor), 100));
+        stroke(0);
+        strokeWeight(0f);
+        ellipse(width * 0.5f, height * 0.5f, width * 0.415f, height * 0.415f);
     }
 
     private void drawInnerCircles() {
