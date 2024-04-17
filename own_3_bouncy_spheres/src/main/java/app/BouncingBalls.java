@@ -81,13 +81,13 @@ public class BouncingBalls extends PApplet {
         ball.getVPos().add(ball.getVDir());
 
         final PVector directionOut = directionToCenter.copy().mult(-1);
-        directionOut.setMag(BALL_RADIUS); // TODO: eventually * 2
+        directionOut.setMag(BALL_RADIUS);
         collisions.add(new ParticleSystem(this, directionOut.add(ball.getVPos()), ball.getColor()));
 
         final float random = random(0, 1);
         if (random > 0.75f) {
             balls.remove(ball);
-        } else if (random > 0.25f) {
+        } else if (random > 0.5f) {
             spawnNewBall();
         }
     }
@@ -129,9 +129,9 @@ public class BouncingBalls extends PApplet {
     private Ball newBall() {
         return Ball.builder()
                 .radius(BALL_RADIUS)
-                .color(color(random(75, 255), random(75, 255), random(20, 255)))
+                .color(color(random(0, 255), random(0, 255), random(0, 255)))
                 .vPos(new PVector(random(width * 0.3f, width * 0.7f), random(height * 0.3f, height * 0.7f)))
-                .vDir(new PVector(random(-4, 4), random(-5, -2)))
+                .vDir(new PVector(random(-10, 10), random(-10, 0)))
                 .build();
     }
 
