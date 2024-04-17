@@ -15,9 +15,11 @@ public class BouncingBalls extends PApplet {
     private static final float ARENA_RADIUS = WINDOW_SIZE * 0.4f;
     private static final float BALL_RADIUS = ARENA_RADIUS * 0.07f;
     private static final float GRAVITY = 0.08f;
+    private final List<ParticleSystem> collisions = new ArrayList<>();
 
     private final List<Ball> balls = new ArrayList<>();
-    private int lastCollisionColor = color(255, 0, 0);
+    private int lastCollisionColor = color(0);
+
 
     @Override
     public void settings() {
@@ -36,6 +38,7 @@ public class BouncingBalls extends PApplet {
         background(0);
 
         drawCollisionLightUp();
+        drawCollisionParticles();
         drawBorder();
         drawBalls();
 
@@ -77,10 +80,14 @@ public class BouncingBalls extends PApplet {
         ball.getVDir().set(directionToCenter);
         ball.getVPos().add(ball.getVDir());
 
+        final PVector directionOut = directionToCenter.copy().mult(-1);
+        directionOut.setMag(BALL_RADIUS); // TODO: eventually * 2
+        collisions.add(new ParticleSystem(this, directionOut.add(ball.getVPos()), ball.getColor()));
+
         final float random = random(0, 1);
         if (random > 0.75f) {
             balls.remove(ball);
-        } else if (random > 0.5f) {
+        } else if (random > 0.25f) {
             spawnNewBall();
         }
     }
@@ -140,6 +147,17 @@ public class BouncingBalls extends PApplet {
         stroke(0);
         strokeWeight(0f);
         ellipse(width * 0.5f, height * 0.5f, width * 0.41f, height * 0.41f);
+    }
+
+    private void drawCollisionParticles() {
+        collisions.forEach(collision -> {
+            collision.applyForceToOuter();
+            collision.run();
+            for (int i = 0; i < 2; i++) {
+                collision.addParticle();
+            }
+
+        });
     }
 
     private void drawBalls() {
