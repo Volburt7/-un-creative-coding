@@ -41,63 +41,29 @@ public class BouncingBalls extends PApplet {
     public void draw() {
         background(0);
 
-        updateInnerCircles();
+        drawCollisionLightUp();
+        drawBorder();
+        drawBalls();
 
-        drawOuterCircleCollisionLightUp();
-        drawOuterCircle();
-        drawInnerCircles();
+        updateBalls();
     }
 
-    private void updateInnerCircles() {
+    private void updateBalls() {
         final List<Ball> balls_cpy = new ArrayList<>(balls);
         for (final Ball check : balls_cpy) {
             if (checkBorderCollision(check)) {
-                lastCollisionColor = check.getColor();
-                PVector center = new PVector(width / 2, height / 2);
-                PVector directionToCenter = PVector.sub(center, check.getVPos()).normalize();
-                check.getVDir().set(directionToCenter);
-                check.getVPos().add(check.getVDir());
-                if (random(0, 1) > 0.75f) {
-                    // 25% to remove ball
-                    System.out.println("removing ball");
-                    balls.remove(check);
-                }
-                if (random(0, 1) > 0.75f) {
-                    // 25% to spawn new ball
-                    System.out.println("spawn new ball");
-                    spawnNewBallInCenter();
-                }
+                handleBorderCollision(check);
             }
             for (final Ball ball : balls_cpy) {
                 if (check.equals(ball)) {
                     continue;
                 }
                 if (checkCollision(check, ball)) {
-                    PVector directionAway = PVector.sub(check.getVPos(), ball.getVPos()).normalize();
-                    check.getVDir().set(directionAway);
+                    handleCollision(check, ball);
                 }
             }
         }
         balls.forEach(ball -> ball.getVPos().add(ball.getVDir()));
-    }
-
-    private void spawnNewBallInCenter() {
-        balls.add(newBall().build()
-        );
-    }
-
-    private Ball.BallBuilder newBall() {
-        return Ball.builder()
-                .radius(BALL_RADIUS)
-                .color(color(random(0, 255), random(0, 255), random(0, 255)))
-                .vPos(new PVector(width * 0.5f, height * 0.5f))
-                .vDir(new PVector(random(-2,2), random(-5,-2)));
-    }
-
-    private boolean checkCollision(final Ball b1, final Ball b2) {
-        final float distBetween = dist(b1.getVPos().x, b1.getVPos().y, b2.getVPos().x, b2.getVPos().y);
-        final float radiusSum = b1.getRadius() + b2.getRadius();
-        return distBetween < radiusSum;
     }
 
     private boolean checkBorderCollision(final Ball b) {
@@ -106,22 +72,59 @@ public class BouncingBalls extends PApplet {
         return distToCenter > (radiusSum - (b.getRadius() * 2));
     }
 
+    private void handleBorderCollision(final Ball ball) {
+        lastCollisionColor = ball.getColor();
+        final PVector center = new PVector(width * 0.5f, height * 0.5f);
+        final PVector directionToCenter = PVector.sub(center, ball.getVPos()).normalize();
+        ball.getVDir().set(directionToCenter);
+        ball.getVPos().add(ball.getVDir());
+        if (random(0, 1) > 0.75f) {
+            balls.remove(ball);
+        }
+        if (random(0, 1) > 0.75f) {
+            spawnNewBallInCenter();
+        }
+    }
 
-    private void drawOuterCircle() {
+    private void spawnNewBallInCenter() {
+        balls.add(newBall().build()
+        );
+    }
+
+    private boolean checkCollision(final Ball b1, final Ball b2) {
+        final float distBetween = dist(b1.getVPos().x, b1.getVPos().y, b2.getVPos().x, b2.getVPos().y);
+        final float radiusSum = b1.getRadius() + b2.getRadius();
+        return distBetween < radiusSum;
+    }
+
+    private static void handleCollision(final Ball check, final Ball ball) {
+        final PVector directionAway = PVector.sub(check.getVPos(), ball.getVPos()).normalize();
+        check.getVDir().set(directionAway);
+    }
+
+    private Ball.BallBuilder newBall() {
+        return Ball.builder()
+                .radius(BALL_RADIUS)
+                .color(color(random(0, 255), random(0, 255), random(0, 255)))
+                .vPos(new PVector(width * 0.5f, height * 0.5f))
+                .vDir(new PVector(random(-2, 2), random(-5, -2)));
+    }
+
+    private void drawBorder() {
         fill(0);
         stroke(255);
         strokeWeight(3f);
         ellipse(width * 0.5f, height * 0.5f, width * 0.4f, height * 0.4f);
     }
 
-    private void drawOuterCircleCollisionLightUp() {
+    private void drawCollisionLightUp() {
         fill(color(red(lastCollisionColor), green(lastCollisionColor), blue(lastCollisionColor), 100));
         stroke(0);
         strokeWeight(0f);
         ellipse(width * 0.5f, height * 0.5f, width * 0.415f, height * 0.415f);
     }
 
-    private void drawInnerCircles() {
+    private void drawBalls() {
         strokeWeight(0f);
         balls.forEach(ball -> {
             fill(ball.getColor());
