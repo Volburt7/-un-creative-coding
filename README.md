@@ -109,9 +109,9 @@ Durch das Mausrad oder Maustasten wird dann gezoomed und die Position/Sichtbarke
 [Idee von hier](https://www.youtube.com/watch?v=EK32jo7i5LQ)
 
 ## Extra 2 Aneinanderhängende Vektoren
-![X_2](./documentation/own2_893.mp4)
-![X_2](./documentation/own2_2991.mp4)
-![X_2](./documentation/own2_3645.mp4)
+![X_2_893](./documentation/own2_893.mp4)
+![X_2_2991](./documentation/own2_2991.mp4)
+![X_2_3645](./documentation/own2_3645.mp4)
 Zwei Vektoren werden aneinandergehangen und beiden wird jeweils eine eigene Drehgeschwindigkeit gegeben.
 Mit ganz viel Glück, entsteht hier auch mal ein perfekter Schwingkreis, aber meistens wiederholt es sich leicht versetzt, wodurch auf Dauer alles ausgemalt wird.
 Origin der Idee war es eigentlich mit ganz vielen Vektoren ein Bild zu malen, aber dafür müsste ich mich mit noch mehr mit der Fourier-Reihe auseinandersetzen..

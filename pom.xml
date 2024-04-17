@@ -29,6 +29,7 @@
         <module>ex81_fish</module>
         <module>own_2_random_vectors</module>
         <module>own_1_prime_spiral</module>
+        <module>own_3_bouncy_spheres</module>
     </modules>
 
     <properties>
