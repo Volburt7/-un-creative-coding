@@ -1,5 +1,7 @@
 package app;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -7,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BouncingBalls extends PApplet {
+    private static final Logger LOG = LoggerFactory.getLogger(BouncingBalls.class);
+
     private static final int WINDOW_SIZE = 1024;
     private static final float ARENA_RADIUS = WINDOW_SIZE * 0.4f;
-    private static final float BALL_RADIUS = ARENA_RADIUS * 0.08f;
+    private static final float BALL_RADIUS = ARENA_RADIUS * 0.07f;
     private static final float GRAVITY = 0.08f;
 
     private final List<Ball> balls = new ArrayList<>();
@@ -24,18 +28,7 @@ public class BouncingBalls extends PApplet {
     public void setup() {
         frameRate(60);
         ellipseMode(RADIUS);
-        addInitialBalls();
-    }
-
-    private void addInitialBalls() {
-        balls.add(newBall()
-                .vPos(new PVector(width * 0.5f, height * 0.5f))
-                .build()
-        );
-        balls.add(newBall()
-                .vPos(new PVector(width * 0.5f, height * 0.5f - BALL_RADIUS * 5))
-                .build()
-        );
+        spawnNewBall();
     }
 
     @Override
@@ -47,24 +40,26 @@ public class BouncingBalls extends PApplet {
         drawBalls();
 
         updateBalls();
+        balls.forEach(ball -> {
+            ball.getVDir().add(0, GRAVITY);
+            ball.getVPos().add(ball.getVDir());
+        });
     }
 
     private void updateBalls() {
-        final List<Ball> balls_cpy = new ArrayList<>(balls);
-        for (final Ball check : balls_cpy) {
-            if (checkBorderCollision(check)) {
-                handleBorderCollision(check);
+        final List<Ball> ballsCopy = new ArrayList<>(balls);
+        for (final Ball toUpdate : ballsCopy) {
+            if (checkBorderCollision(toUpdate)) {
+                handleBorderCollision(toUpdate);
             }
-            for (final Ball ball : balls_cpy) {
-                if (check.equals(ball)) {
+            for (final Ball ball : ballsCopy) {
+                if (toUpdate.equals(ball)) {
                     continue;
                 }
-                if (checkCollision(check, ball)) {
-                    handleCollision(check, ball);
+                if (checkCollision(toUpdate, ball)) {
+                    handleCollision(toUpdate, ball);
                 }
             }
-            check.getVDir().add(0, GRAVITY);
-            check.getVPos().add(check.getVDir());
         }
     }
 
@@ -81,17 +76,33 @@ public class BouncingBalls extends PApplet {
         directionToCenter.setMag(ball.getVDir().mag());
         ball.getVDir().set(directionToCenter);
         ball.getVPos().add(ball.getVDir());
-        if (random(0, 1) > 0.75f) {
+
+        final float random = random(0, 1);
+        if (random > 0.75f) {
             balls.remove(ball);
-        }
-        if (random(0, 1) > 0.75f) {
-            spawnNewBallInCenter();
+        } else if (random > 0.5f) {
+            spawnNewBall();
         }
     }
 
-    private void spawnNewBallInCenter() {
-        balls.add(newBall().build()
-        );
+    private void spawnNewBall() {
+        for (int i = 0; i <= 10; i++) {
+            final Ball ball = newBall();
+            if (hasNoCollision(ball)) {
+                balls.add(ball);
+                return;
+            }
+        }
+        LOG.warn("Couldn't spawn new ball due to collisions.");
+    }
+
+    private boolean hasNoCollision(final Ball ball) {
+        for (Ball b : balls) {
+            if (checkCollision(ball, b)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean checkCollision(final Ball b1, final Ball b2) {
@@ -101,20 +112,20 @@ public class BouncingBalls extends PApplet {
     }
 
     private void handleCollision(final Ball ball, final Ball other) {
-        // Todo: This logic is broken and i dont know tbh...
-        final PVector collisionVector = PVector.sub(ball.getVPos(), other.getVPos());
-        collisionVector.normalize();
-        final float velAlongCollision = PVector.dot(ball.getVDir(), collisionVector);
-        final PVector newVelDir = PVector.sub(ball.getVDir(), PVector.mult(collisionVector, 2 * velAlongCollision));
+        // https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+        final PVector collisionNormalized = PVector.sub(ball.getVPos(), other.getVPos()).normalize();
+        final float velocityAlongCollision = PVector.dot(ball.getVDir(), collisionNormalized);
+        final PVector newVelDir = PVector.sub(ball.getVDir(), PVector.mult(collisionNormalized, 2 * velocityAlongCollision));
         ball.setVDir(newVelDir);
     }
 
-    private Ball.BallBuilder newBall() {
+    private Ball newBall() {
         return Ball.builder()
                 .radius(BALL_RADIUS)
                 .color(color(random(75, 255), random(75, 255), random(20, 255)))
-                .vPos(new PVector(width * 0.5f, height * 0.5f))
-                .vDir(new PVector(random(-4, 4), random(-5, -2)));
+                .vPos(new PVector(random(width * 0.3f, width * 0.7f), random(height * 0.3f, height * 0.7f)))
+                .vDir(new PVector(random(-4, 4), random(-5, -2)))
+                .build();
     }
 
     private void drawBorder() {
@@ -125,14 +136,15 @@ public class BouncingBalls extends PApplet {
     }
 
     private void drawCollisionLightUp() {
-        fill(color(red(lastCollisionColor), green(lastCollisionColor), blue(lastCollisionColor), 100));
+        fill(color(red(lastCollisionColor), green(lastCollisionColor), blue(lastCollisionColor), 155));
         stroke(0);
         strokeWeight(0f);
-        ellipse(width * 0.5f, height * 0.5f, width * 0.415f, height * 0.415f);
+        ellipse(width * 0.5f, height * 0.5f, width * 0.41f, height * 0.41f);
     }
 
     private void drawBalls() {
-        strokeWeight(0f);
+        stroke(255);
+        strokeWeight(2f);
         balls.forEach(ball -> {
             fill(ball.getColor());
             ellipse(ball.getVPos().x, ball.getVPos().y, ball.getRadius(), ball.getRadius());
