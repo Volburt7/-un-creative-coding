@@ -8,6 +8,10 @@ import processing.core.PVector;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* Idee von https://www.reddit.com/r/oddlysatisfying/comments/19bgdvr/the_chance_of_probability/?share_id=XF-G2q8ryQhpwprF2WaFH&utm_content=1&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=3
+* Partikelsystem von hier kopiert: https://processing.org/examples/smokeparticlesystem.html
+* */
 public class BouncingBalls extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(BouncingBalls.class);
 
