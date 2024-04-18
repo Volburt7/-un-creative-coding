@@ -37,7 +37,9 @@ public class MovingSquares extends PApplet {
         final int max = SIZE / SQUARE_SIZE;
         final List<Square> squares = new ArrayList<>();
         for (int i = 0; i < max; i++) {
+            if (i == 0 || i == max - 1) {continue;}
             for (int j = 0; j < max; j++) {
+                if (j == 0 || j == max - 1) {continue;}
                 squares.add(createSquare(i, j));
             }
         }
