@@ -5,8 +5,11 @@ import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
- * Idee von https://www.reddit.com/r/oddlysatisfying/comments/19bgdvr/the_chance_of_probability/?share_id=XF-G2q8ryQhpwprF2WaFH&utm_content=1&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=3
+ * Idee von https://www.reddit.com/r/PixelArt/comments/18y9y9y/
  * Partikelsystem von hier kopiert: https://processing.org/examples/smokeparticlesystem.html
  * */
 public class MovingSquares extends PApplet {
@@ -14,8 +17,10 @@ public class MovingSquares extends PApplet {
 
     // size must be dividable by square size
     private static final int SIZE = 512;
-    private static final int SQUARE_SIZE = 32;
-    private Square[][] squares;
+    // If square_size changes generatePixels() also needs an update
+    private static final int SQUARE_SIZE = 64;
+    private final int bgColor = color(145, 39, 27);
+    private List<Square> squares = new ArrayList<>();
 
     @Override
     public void settings() {
@@ -25,44 +30,89 @@ public class MovingSquares extends PApplet {
     @Override
     public void setup() {
         frameRate(60);
-        if (SIZE % SQUARE_SIZE != 0) {
-            LOG.error("size must be dividable by square size.");
-            exit();
-        }
-        squares = initializeSquares();
+        initializeSquares();
     }
 
-    private Square[][] initializeSquares() {
+    private void initializeSquares() {
         final int max = SIZE / SQUARE_SIZE;
-        final Square[][] squares = new Square[max][max];
+        final List<Square> squares = new ArrayList<>();
         for (int i = 0; i < max; i++) {
             for (int j = 0; j < max; j++) {
-                squares[i][j] = createSquare(i, j);
+                squares.add(createSquare(i, j));
             }
         }
-        return squares;
+        this.squares = squares;
     }
 
     private Square createSquare(final int i, final int j) {
         return Square.builder()
                 .position(new PVector(SQUARE_SIZE * i, SQUARE_SIZE * j))
                 .goUp(i % 2 == 0)
-                .pixels(generatePixels(j % 8))
+                .pixels(generatePixels())
                 .build();
     }
 
-    private int[][] generatePixels(int addifier) {
-        final int[][] squares = new int[SQUARE_SIZE][SQUARE_SIZE];
-        for (int i = 0; i<SQUARE_SIZE; i++) {
-            for (int j = 0; j<SQUARE_SIZE; j++) {
-                // TODO: apply some basic logic to set some random fields which are coherent
+    private int[][] generatePixels() {
+        final int[][] pixels = new int[SQUARE_SIZE][SQUARE_SIZE];
+        final int steps = 8;
+        final int start = 4;
+        final int end = SQUARE_SIZE - start;
+        for (int i = start; i < end; i += steps) {
+            for (int j = start; j < end; j += steps) {
+                int color = color(0);
+                if (random(0, 1) > 0.5f) {
+                    color = color(bgColor);
+                }
+                for (int innerI = i; innerI < i + steps; innerI++) {
+                    for (int innerJ = j; innerJ < j + steps; innerJ++) {
+                        pixels[innerI][innerJ] = color;
+                    }
+                }
             }
         }
-        return squares;
+        return pixels;
     }
 
     @Override
     public void draw() {
-        background(0);
+        background(bgColor);
+        squares.forEach(this::drawSquare);
+        squares.forEach(this::updateSquare);
+    }
+
+    private void drawSquare(final Square square) {
+        int[][] squarePixelsArray = square.getPixels();
+        for (int i = 0; i < squarePixelsArray.length; i++) {
+            int[] squarePixels = squarePixelsArray[i];
+            for (int j = 0; j < squarePixels.length; j++) {
+                int pixelColor = squarePixels[j];
+                pushMatrix();
+                stroke(pixelColor);
+                strokeWeight(1f);
+                point(square.getPosition().x + i, square.getPosition().y + j);
+                popMatrix();
+            }
+        }
+    }
+
+    private void updateSquare(final Square square) {
+        int[][] squarePixelsArray = square.getPixels().clone();
+        for (int i = 0; i < squarePixelsArray.length; i++) {
+            final int[] line = square.getPixels()[i];
+            if (square.isGoUp()) {
+                if (i == 0) {
+                    squarePixelsArray[squarePixelsArray.length - 1] = line;
+                } else {
+                    squarePixelsArray[i - 1] = line;
+                }
+            } else {
+                if (i == squarePixelsArray.length - 1) {
+                    squarePixelsArray[0] = line;
+                } else {
+                    squarePixelsArray[i + 1] = line;
+                }
+            }
+        }
+        square.setPixels(squarePixelsArray);
     }
 }
