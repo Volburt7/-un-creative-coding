@@ -36,6 +36,7 @@ public class MovingSquares extends PApplet {
     private void initializeSquares() {
         final int max = SIZE / SQUARE_SIZE;
         final List<Square> squares = new ArrayList<>();
+        // Iteration with 2 for loops, so we can skip row/col 1 and last
         for (int i = 0; i < max; i++) {
             if (i == 0 || i == max - 1) {continue;}
             for (int j = 0; j < max; j++) {
@@ -61,10 +62,12 @@ public class MovingSquares extends PApplet {
         final int end = SQUARE_SIZE - start;
         for (int i = start; i < end; i += steps) {
             for (int j = start; j < end; j += steps) {
+                // choose a random color
                 int color = color(0);
                 if (random(0, 1) > 0.5f) {
                     color = color(bgColor);
                 }
+                // This sets the color values for steps in x and y direction
                 for (int innerI = i; innerI < i + steps; innerI++) {
                     for (int innerJ = j; innerJ < j + steps; innerJ++) {
                         pixels[innerI][innerJ] = color;
@@ -83,7 +86,7 @@ public class MovingSquares extends PApplet {
     }
 
     private void drawSquare(final Square square) {
-        int[][] squarePixelsArray = square.getPixels();
+        int[][] squarePixelsArray = getPixelsSwapColAndRow(square);
         for (int i = 0; i < squarePixelsArray.length; i++) {
             int[] squarePixels = squarePixelsArray[i];
             for (int j = 0; j < squarePixels.length; j++) {
@@ -95,6 +98,21 @@ public class MovingSquares extends PApplet {
                 popMatrix();
             }
         }
+    }
+
+    private int[][] getPixelsSwapColAndRow(final Square square) {
+        int[][] squarePixelsArray = square.getPixels().clone();
+        if (squarePixelsArray.length <= 0) {
+            LOG.warn("squarePixelsArray empty");
+            return squarePixelsArray;
+        }
+        int[][] swapped = new int[squarePixelsArray[0].length][squarePixelsArray.length];
+        for (int i = 0; i < squarePixelsArray.length; i++) {
+            for (int j = 0; j < squarePixelsArray[i].length; j++) {
+                swapped[j][i] = squarePixelsArray[i][j];
+            }
+        }
+        return swapped;
     }
 
     private void updateSquare(final Square square) {
