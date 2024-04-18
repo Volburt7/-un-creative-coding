@@ -15,7 +15,7 @@ import java.util.List;
 public class BouncingBalls extends PApplet {
     private static final Logger LOG = LoggerFactory.getLogger(BouncingBalls.class);
 
-    private static final int WINDOW_SIZE = 1024;
+    private static final int WINDOW_SIZE = 600;
     private static final float ARENA_RADIUS = WINDOW_SIZE * 0.4f;
     private static final float BALL_RADIUS = ARENA_RADIUS * 0.07f;
     private static final float GRAVITY = 0.08f;
