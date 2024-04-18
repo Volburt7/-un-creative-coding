@@ -58,7 +58,7 @@ public class MovingSquares extends PApplet {
     private int[][] generatePixels() {
         final int[][] pixels = new int[SQUARE_SIZE][SQUARE_SIZE];
         final int steps = 8;
-        final int start = 4;
+        final int start = 0;
         final int end = SQUARE_SIZE - start;
         for (int i = start; i < end; i += steps) {
             for (int j = start; j < end; j += steps) {
@@ -82,6 +82,7 @@ public class MovingSquares extends PApplet {
     public void draw() {
         background(bgColor);
         squares.forEach(this::drawSquare);
+        squares.forEach(this::drawBordersBetween);
         squares.forEach(this::updateSquare);
     }
 
@@ -98,6 +99,14 @@ public class MovingSquares extends PApplet {
                 popMatrix();
             }
         }
+    }
+    private void drawBordersBetween(final Square square) {
+        pushMatrix();
+        fill(0,0,0,0);
+        stroke(bgColor,255);
+        strokeWeight(5f);
+        rect(square.getPosition().x, square.getPosition().y, SQUARE_SIZE, SQUARE_SIZE);
+        popMatrix();
     }
 
     private int[][] getPixelsSwapColAndRow(final Square square) {
