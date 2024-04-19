@@ -6,22 +6,22 @@ import org.slf4j.LoggerFactory;
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 public class MySoundPlayer implements LineListener {
     private static final Logger LOG = LoggerFactory.getLogger(MySoundPlayer.class);
 
-    final InputStream inputStream;
-    final AudioInputStream audioStream;
-    final Clip audioClip;
+    private final String fileName;
+    private final InputStream inputStream;
+    private final AudioInputStream audioStream;
+    private final Clip audioClip;
 
     public MySoundPlayer(final String fileName) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         LOG.info("Loading '{}'", fileName);
+        this.fileName = fileName;
         this.inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
-        this.audioStream = AudioSystem.getAudioInputStream(inputStream);
-
-        final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioStream.getFormat());
-
-        this.audioClip = (Clip) AudioSystem.getLine(info);
+        this.audioStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(inputStream));
+        this.audioClip = AudioSystem.getClip();
         this.audioClip.addLineListener(this);
         this.audioClip.open(audioStream);
         LOG.info("Loading complete.");
@@ -30,20 +30,20 @@ public class MySoundPlayer implements LineListener {
     @Override
     public void update(LineEvent event) {
         if (LineEvent.Type.START == event.getType()) {
-            System.out.println("Playback started.");
+            LOG.debug("Playback started for file '{}'", fileName);
         } else if (LineEvent.Type.STOP == event.getType()) {
-            System.out.println("Playback completed.");
+            LOG.debug("Playback stopped for file '{}'", fileName);
         }
     }
 
-    // Closing would actually matter if we wanted the program to continue running but doesn't matter here...
-    public void close() throws Exception {
+    public void play() {
+        audioClip.setFramePosition(0);
+        audioClip.start();
+    }
+
+    public void close() throws IOException {
         this.audioClip.close();
         this.audioStream.close();
         this.inputStream.close();
-    }
-
-    public void play() {
-        audioClip.start();
     }
 }
