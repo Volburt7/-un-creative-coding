@@ -31,6 +31,7 @@
         <module>own_1_prime_spiral</module>
         <module>own_3_bouncy_spheres</module>
         <module>own_4_up_and_down</module>
+        <module>own_5_music</module>
     </modules>
 
     <properties>
