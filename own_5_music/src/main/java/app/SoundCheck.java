@@ -5,16 +5,11 @@ import ddf.minim.Minim;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 
-
-/*
-* Piano Notes von https://archive.org/details/24-piano-keys
-* */
 public class SoundCheck extends PApplet {
 
     Minim minim;
-    AudioPlayer[] notes = new AudioPlayer[24];
-    float[] pitches = {1.0f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f};
-    int currentNoteIndex = 0;
+    AudioPlayer[] notes = new AudioPlayer[2];
+    float[] tunings = {1.0f, 1.5f}; // Adjust tunings for each note
 
     @Override
     public void settings() {
@@ -27,33 +22,33 @@ public class SoundCheck extends PApplet {
 
         minim = new Minim(this);
 
-        for (int i = 0; i < notes.length; i++) {
-            notes[i] = minim.loadFile("piano-keys/key" + nf(i + 1, 2) + ".mp3");
-        }
+        notes[0] = minim.loadFile("nylon-guitar-single-note.mp3");
+        notes[1] = minim.loadFile("guitar-drum-single.mp3");
+        notes[0].loop();
     }
 
     @Override
     public void draw() {
         background(0);
+        fill(255);
+        if (frameCount % 120 == 0) {
+            System.out.println("playing");
+            playNextNote();
+        }
     }
 
     @Override
     public void keyPressed(final KeyEvent keyEvent) {
-        if (keyEvent.getKeyCode() == 32) {
-            nextNote();
+        if (keyEvent.getKeyCode() == 32) { // Space key
+            playNextNote();
         }
     }
 
-    void nextNote() {
-        if (currentNoteIndex > 0) {
-            notes[currentNoteIndex - 1].rewind();
-        }
-
-        if (currentNoteIndex < notes.length) {
-            notes[currentNoteIndex].play();
-            currentNoteIndex++;
-        } else {
-            currentNoteIndex = 0;
-        }
+    void playNextNote() {
+        int index = 0; // Play the first note
+        float tuning = tunings[index]; // Get tuning for the note
+        notes[index].setBalance(tuning); // Apply tuning
+        notes[index].loop(); // Loop the note continuously
+        println("Note " + index + " with tuning " + tuning + " played.");
     }
 }
