@@ -17,14 +17,14 @@ public class MySoundPlayer implements LineListener {
     private final Clip audioClip;
 
     public MySoundPlayer(final String fileName) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        LOG.info("Loading '{}'", fileName);
+        LOG.debug("Loading '{}'", fileName);
         this.fileName = fileName;
         this.inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
         this.audioStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(inputStream));
         this.audioClip = AudioSystem.getClip();
         this.audioClip.addLineListener(this);
         this.audioClip.open(audioStream);
-        LOG.info("Loading complete.");
+        LOG.debug("Loading complete.");
     }
 
     @Override

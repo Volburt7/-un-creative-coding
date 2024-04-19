@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +21,14 @@ public class BouncingBalls extends PApplet {
     private static final int WINDOW_SIZE = 600;
     private static final float ARENA_RADIUS = WINDOW_SIZE * 0.4f;
     private static final float BALL_RADIUS = ARENA_RADIUS * 0.07f;
-    private static final float GRAVITY = 0.08f;
+    private static final float GRAVITY = 0.2f;
     private final List<ParticleSystem> collisions = new ArrayList<>();
 
     private final List<Ball> balls = new ArrayList<>();
     private int lastCollisionColor = color(0);
 
+    private final List<MySoundPlayer> soundPlayers = new ArrayList<>();
+    private int currentSoundIndex = 0;
 
     @Override
     public void settings() {
@@ -35,6 +40,22 @@ public class BouncingBalls extends PApplet {
         frameRate(60);
         ellipseMode(RADIUS);
         spawnNewBall();
+        initSound();
+    }
+
+    private void initSound() {
+        for (int i = 1; i <= 24; i++) {
+            final String fileName = "piano/key" + nf(i, 2) + ".wav";
+            try {
+                soundPlayers.add(new MySoundPlayer(fileName));
+            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+                LOG.error("Could not instantiate Soundplayer for file: '{}'", fileName, e);
+                exit();
+            }
+        }
+        if (soundPlayers.isEmpty()) {
+            LOG.warn("Define some audio files");
+        }
     }
 
     @Override
@@ -58,6 +79,7 @@ public class BouncingBalls extends PApplet {
         for (final Ball toUpdate : ballsCopy) {
             if (checkBorderCollision(toUpdate)) {
                 handleBorderCollision(toUpdate);
+                playSound();
             }
             for (final Ball ball : ballsCopy) {
                 if (toUpdate.equals(ball)) {
@@ -133,9 +155,9 @@ public class BouncingBalls extends PApplet {
     private Ball newBall() {
         return Ball.builder()
                 .radius(BALL_RADIUS)
-                .color(color(random(0, 255), random(0, 255), random(0, 255)))
+                .color(color(random(0, 255), random(0, 255), random(0, 150)))
                 .vPos(new PVector(random(width * 0.3f, width * 0.7f), random(height * 0.3f, height * 0.7f)))
-                .vDir(new PVector(random(-10, 10), random(-10, 0)))
+                .vDir(new PVector(random(-10, 10), random(-10, 1)))
                 .build();
     }
 
@@ -171,5 +193,26 @@ public class BouncingBalls extends PApplet {
             fill(ball.getColor());
             ellipse(ball.getVPos().x, ball.getVPos().y, ball.getRadius(), ball.getRadius());
         });
+    }
+
+    private void playSound() {
+        soundPlayers.get(currentSoundIndex).play();
+
+        currentSoundIndex += 1;
+        if (soundPlayers.size() <= currentSoundIndex) {
+            currentSoundIndex = 0;
+        }
+    }
+
+    @Override
+    public void exit() {
+        soundPlayers.forEach(sp -> {
+            try {
+                sp.close();
+            } catch (IOException e) {
+                LOG.error(e.getMessage(), e);
+            }
+        });
+        super.exit();
     }
 }
