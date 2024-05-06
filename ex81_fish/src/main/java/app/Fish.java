@@ -22,16 +22,18 @@ import static processing.core.PApplet.*;
 public class Fish {
     private final PApplet fishAgent;
     private final List<Fish> fishList;
+
     private final PVector position;
     private final PVector velocity;
     private final PVector acceleration;
+
     private final float width;
     private final float length;
     private final float maxForce;
     private final float maxSpeed;
 
-    private float finRotation = 0;
-    private boolean finDirection = false;
+    private float finRotation;
+    private boolean finDirection;
 
     public void run() {
         this.flock();
@@ -45,8 +47,8 @@ public class Fish {
         final PVector ali = this.align();
         final PVector coh = this.cohesion();
 
-        sep.mult(2.5f);
-        ali.mult(1.0f);
+        sep.mult(1.5f);
+        ali.mult(1.5f);
         coh.mult(1.0f);
 
         acceleration.add(sep);
@@ -63,9 +65,9 @@ public class Fish {
     }
 
     public void moveFin() {
-        if (this.finRotation >= 20) {
+        if (this.finRotation >= 30) {
             this.finDirection = true;
-        } else if (this.finRotation <= -20) {
+        } else if (this.finRotation <= -30) {
             this.finDirection = false;
         }
 
@@ -77,9 +79,9 @@ public class Fish {
     }
 
     private PVector seek(final PVector target) {
-        final PVector desired = PVector.sub(target, position);
-        desired.setMag(maxSpeed);
-        PVector steer = PVector.sub(desired, velocity);
+        final PVector desired = PVector.sub(target, this.position);
+        desired.setMag(this.maxSpeed);
+        final PVector steer = PVector.sub(desired, this.velocity);
         steer.limit(maxForce);
         return steer;
     }
@@ -157,50 +159,50 @@ public class Fish {
 
     private PVector separate() {
         final float desiredDist = 25.0f;
-        final PVector steer = new PVector(0, 0, 0);
-        int count = 0;
-
+        final PVector sum = new PVector(0, 0);
+        int numFishInRange = 0;
         for (Fish f : this.fishList) {
+            if(this.equals(f)) continue;
             final float dist = PVector.dist(this.position, f.getPosition());
-            if ((dist > 0) && (dist < desiredDist)) {
+            if (dist != 0 && dist < desiredDist) {
                 final PVector diff = PVector.sub(this.position, f.getPosition());
-                diff.normalize();
-                diff.div(dist);
-                steer.add(diff);
-                count++;
+                diff.normalize().div(dist);
+                sum.add(diff);
+                numFishInRange++;
             }
         }
 
-        if (count > 0) {
-            steer.div((float) count);
+        if (numFishInRange > 0) {
+            sum.div(numFishInRange);
         }
 
 
-        if (steer.mag() > 0) {
-            steer.setMag(this.maxSpeed);
-            steer.sub(this.velocity);
-            steer.limit(this.maxForce);
+        if (sum.mag() > 0) {
+            sum.setMag(this.maxSpeed);
+            sum.sub(this.velocity);
+            sum.limit(this.maxForce);
         }
-        return steer;
+        return sum;
     }
 
     final PVector align() {
         final float neighborDist = 50;
         final PVector sum = new PVector(0, 0);
-        int count = 0;
+        int numFishInRange = 0;
         for (Fish f : this.fishList) {
+            if(this.equals(f)) continue;
             float dist = PVector.dist(this.position, f.getPosition());
-            if ((dist > 0) && (dist < neighborDist)) {
+            if (dist < neighborDist) {
                 sum.add(f.getVelocity());
-                count++;
+                numFishInRange++;
             }
         }
-        if (count > 0) {
-            sum.div((float) count);
+        if (numFishInRange > 0) {
+            sum.div(numFishInRange);
 
             // Implement Reynolds: Steering = Desired - Velocity
             sum.setMag(this.maxSpeed);
-            PVector steer = PVector.sub(sum, velocity);
+            PVector steer = PVector.sub(sum, this.velocity);
             steer.limit(this.maxForce);
             return steer;
         } else {
@@ -210,17 +212,18 @@ public class Fish {
 
     private PVector cohesion() {
         final float neighborDist = 50;
-        PVector sum = new PVector(0, 0);
-        int count = 0;
+        final PVector sum = new PVector(0, 0);
+        int numFishInRange = 0;
         for (Fish f : this.fishList) {
+            if(this.equals(f)) continue;
             float dist = PVector.dist(this.position, f.getPosition());
-            if ((dist > 0) && (dist < neighborDist)) {
+            if (dist < neighborDist) {
                 sum.add(f.getPosition());
-                count++;
+                numFishInRange++;
             }
         }
-        if (count > 0) {
-            sum.div(count);
+        if (numFishInRange > 0) {
+            sum.div(numFishInRange);
             return this.seek(sum);
         } else {
             return new PVector(0, 0);
