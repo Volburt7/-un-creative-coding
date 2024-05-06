@@ -61,6 +61,7 @@ public class BouncingBalls extends PApplet {
             if (!collisions.isEmpty() && collDirSum.x == 0 && collDirSum.y == 0) {
                 collDirSum.add(new PVector(random(0, 1), random(0, 1)));
             }
+
             collDirSum.mult(collisions.size());
             ball.getVPos().add(collDirSum);
         }

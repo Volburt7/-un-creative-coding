@@ -73,7 +73,6 @@ public class SpinAndSizeUpSquares extends PApplet {
                     transparency = map(offset, 1, 5, 0, 255);
                 }
                 fill(squareColor.get(0), squareColor.get(1), squareColor.get(2), transparency);
-//                fill(255);
                 translate(w + MAX_SQUARE_SIZE, h + MAX_SQUARE_SIZE);
                 rotate(square.getRotation() * offset);
                 rect(0, 0, squareSize, squareSize);

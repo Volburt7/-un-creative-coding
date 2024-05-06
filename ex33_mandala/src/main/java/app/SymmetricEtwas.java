@@ -18,16 +18,16 @@ public class SymmetricEtwas extends PApplet {
     public void draw() {
         final int pointSize = 6;
         final int splits = 12;
-        final float rotation = 2 * PI / splits;
+        final float rotation = TWO_PI / splits;
         final float alpha = map(frameCount % frameRate, 0, frameRate - 1, 100, 200);
         fill(255);
 
         if (mousePressed) {
-            for (int i = 1; i <= splits; i++) {
+            for (int split = 1; split <= splits; split++) {
                 pushMatrix();
 
                 translate((float) width / 2, (float) height / 2);
-                rotate(i * rotation);
+                rotate(split * rotation);
 
 //                stroke(255);
                 stroke(255, alpha);
