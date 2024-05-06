@@ -154,13 +154,28 @@ public class MovingSquares extends PApplet {
             for (int j = 0; j < SQUARE_SIZE; j++) {
                 if (i == 0) {
                     if (square.getPixels()[i][j] == darkColor) {
-                        square.getPixels()[i][j] = yellowColor;
+                        colorizeNextPixels(square, i, j, 3);
                     }
-                } else if (square.getPixels()[i-1][j] == bgColor && square.getPixels()[i][j] == darkColor) {
-                    square.getPixels()[i][j] = yellowColor;
+                } else if (square.getPixels()[i - 1][j] == bgColor && square.getPixels()[i][j] == darkColor) {
+                    colorizeNextPixels(square, i, j, 3);
                 }
             }
         }
+    }
+
+    private void colorizeNextPixels(final Square square, int i, int j, int numCol) {
+        for (int k = 0; k < numCol; k++) {
+            if (square.getPixels()[i][j] == darkColor) {
+                square.getPixels()[i][j] = yellowColor;
+                i++;
+                if (i > SQUARE_SIZE - 1) {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+
     }
 
     private void resetColorizedTop(final Square square) {
