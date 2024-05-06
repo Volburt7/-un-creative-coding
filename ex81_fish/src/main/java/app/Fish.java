@@ -47,7 +47,7 @@ public class Fish {
         final PVector ali = this.align();
         final PVector coh = this.cohesion();
 
-        sep.mult(1.5f);
+        sep.mult(3f);
         ali.mult(1.5f);
         coh.mult(1.0f);
 
@@ -65,48 +65,41 @@ public class Fish {
     }
 
     public void moveFin() {
-        if (this.finRotation >= 30) {
+        if (this.finRotation >= 45) {
             this.finDirection = true;
-        } else if (this.finRotation <= -30) {
+        } else if (this.finRotation <= -45) {
             this.finDirection = false;
         }
 
         if (this.finDirection) {
-            this.finRotation -= 1;
+            this.finRotation -= velocity.mag();
         } else {
-            this.finRotation += 1;
+            this.finRotation += velocity.mag();
         }
     }
 
-    private PVector seek(final PVector target) {
-        final PVector desired = PVector.sub(target, this.position);
-        desired.setMag(this.maxSpeed);
-        final PVector steer = PVector.sub(desired, this.velocity);
-        steer.limit(maxForce);
-        return steer;
-    }
-
     public void draw() {
-        float theta = velocity.heading() + radians(180);
         this.fishAgent.fill(0, 35, 51);
         this.fishAgent.noStroke();
+
         this.fishAgent.pushMatrix();
         this.fishAgent.translate(position.x, position.y);
-        this.fishAgent.rotate(theta);
+        this.fishAgent.rotate(PI + velocity.heading());
+        this.fishAgent.shape(this.getBody());
+
         this.fishAgent.pushMatrix();
         this.fishAgent.translate(this.length / 2, 0);
         this.fishAgent.rotate(radians(this.finRotation));
         this.fishAgent.shape(this.getFin());
         this.fishAgent.popMatrix();
-        this.fishAgent.shape(this.getBody());
+
         this.fishAgent.popMatrix();
     }
 
     private PShape getBody() {
         final PShape body = this.fishAgent.createShape();
         body.beginShape();
-        body.fill(0, 30, 35);
-        for (float rad = 0.0f; rad <= PI; rad += PI / 100) {
+        for (float rad = 0.0f; rad < PI; rad += PI / 100) {
             float xPos = rad / TWO_PI * this.length;
             float yPos = this.width * sin(rad);
             body.vertex(xPos, yPos);
@@ -122,11 +115,8 @@ public class Fish {
 
     private PShape getFin() {
         final PShape fin = this.fishAgent.createShape();
-        this.fishAgent.pushMatrix();
-        this.fishAgent.rotate(radians(this.finRotation));
         fin.beginShape();
-        fin.fill(0, 30, 35);
-        for (float rad = PI; rad <= PI + QUARTER_PI; rad += (PI + QUARTER_PI) / 50) {
+        for (float rad = PI; rad < PI + QUARTER_PI; rad += (PI + QUARTER_PI) / 50) {
             float xPos = rad / TWO_PI * this.length - this.length / 2;
             float yPos = this.width * sin(rad);
             fin.vertex(xPos, yPos);
@@ -137,10 +127,8 @@ public class Fish {
             fin.vertex(xPos, yPos);
         }
         fin.endShape();
-        this.fishAgent.popMatrix();
         return fin;
     }
-
 
     private void borders() {
         if (this.position.x < -this.width) {
@@ -175,7 +163,6 @@ public class Fish {
         if (numFishInRange > 0) {
             sum.div(numFishInRange);
         }
-
 
         if (sum.mag() > 0) {
             sum.setMag(this.maxSpeed);
@@ -228,5 +215,13 @@ public class Fish {
         } else {
             return new PVector(0, 0);
         }
+    }
+
+    private PVector seek(final PVector target) {
+        final PVector desired = PVector.sub(target, this.position);
+        desired.setMag(this.maxSpeed);
+        final PVector steer = PVector.sub(desired, this.velocity);
+        steer.limit(maxForce);
+        return steer;
     }
 }

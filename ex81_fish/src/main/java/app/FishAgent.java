@@ -31,10 +31,10 @@ public class FishAgent extends PApplet {
                             .position(new PVector(random(0, width), random(0, height)))
                             .acceleration(PVector.random2D())
                             .velocity(new PVector(cos(initialAngle), sin(initialAngle)))
-                            .width(random(1.5f, 20))
-                            .length(random(5, 220))
-                            .maxForce(random(0.02f, 0.04f))
-                            .maxSpeed(random(1, 5))
+                            .width(random(2, 25))
+                            .length(random(10, 220))
+                            .maxForce(random(0.02f, 0.05f))
+                            .maxSpeed(random(1, 10))
                             .build()
             );
         }
